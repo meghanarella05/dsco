@@ -1,0 +1,52 @@
+// 3-Bit Magnitude Comparator: Behavioral Model
+module comparator_3bit_behavioral (
+    input  wire [2:0] A,
+    input  wire [2:0] B,
+    output reg        A_gt_B,
+    output reg        A_eq_B,
+    output reg        A_lt_B
+);
+    always @(*) begin
+        A_gt_B = 1'b0;
+        A_eq_B = 1'b0;
+        A_lt_B = 1'b0;
+
+        if (A > B)
+            A_gt_B = 1'b1;
+        else if (A == B)
+            A_eq_B = 1'b1;
+        else
+            A_lt_B = 1'b1;
+    end
+endmodule
+
+// Simple testbench
+module test;
+    reg  [2:0] A, B;
+    wire       A_gt_B, A_eq_B, A_lt_B;
+
+    comparator_3bit_behavioral dut (
+        .A(A), .B(B),
+        .A_gt_B(A_gt_B), .A_eq_B(A_eq_B), .A_lt_B(A_lt_B)
+    );
+
+    initial begin
+        $dumpfile("dump.vcd");
+        $dumpvars(0, test);
+
+        // Test cases
+        A = 3'b001; B = 3'b000; #10;
+        $display("A=%b B=%b  >%b  ==%b  <%b", A, B, A_gt_B, A_eq_B, A_lt_B);
+
+        A = 3'b010; B = 3'b010; #10;
+        $display("A=%b B=%b  >%b  ==%b  <%b", A, B, A_gt_B, A_eq_B, A_lt_B);
+
+        A = 3'b001; B = 3'b100; #10;
+        $display("A=%b B=%b  >%b  ==%b  <%b", A, B, A_gt_B, A_eq_B, A_lt_B);
+
+        A = 3'b111; B = 3'b000; #10;
+        $display("A=%b B=%b  >%b  ==%b  <%b", A, B, A_gt_B, A_eq_B, A_lt_B);
+
+        $finish;
+    end
+endmodule
