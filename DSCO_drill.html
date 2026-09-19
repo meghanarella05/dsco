@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DSCO drill book</title>
+<style>
+:root{--paper:#EDF2EF;--grid:#D6E0DB;--ink:#16233B;--muted:#56677C;--line:#B5C3BC;--card:#F8FBF9;--accent:#0E6B63;--ok:#1F7A4D;--bad:#B42318;--hl:#FFF0A8;--hlink:#7A6400;--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;--serif:"Iowan Old Style","Palatino Linotype",Georgia,serif;--sans:"Avenir Next","Segoe UI",system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root{--paper:#0F1A1E;--grid:#182A2F;--ink:#E4ECEA;--muted:#93A7A6;--line:#2E4548;--card:#14252A;--accent:#4FD1C0;--ok:#5BD68F;--bad:#FF8A7A;--hl:#3B3517;--hlink:#E8D36A}}
+*{box-sizing:border-box}
+html{height:100%}
+body{margin:0;min-height:100%;background:var(--paper);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px;color:var(--ink);font:16px/1.5 var(--sans);padding:env(safe-area-inset-top,0px) 0 calc(72px + env(safe-area-inset-bottom,0px))}
+main{max-width:760px;margin:0 auto;padding:16px 14px}
+h1{font:700 26px/1.15 var(--serif);margin:8px 0 4px}
+h2{font:700 20px/1.2 var(--serif);margin:22px 0 8px}
+h3{font:700 16px/1.3 var(--sans);margin:14px 0 4px}
+p{margin:6px 0}
+.sub{color:var(--muted);margin:0 0 14px}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);border-top:2px solid var(--ink);padding-bottom:env(safe-area-inset-bottom,0px);z-index:9}
+nav button{flex:1;border:0;background:none;color:var(--muted);font:600 15px var(--sans);padding:14px 4px;cursor:pointer}
+nav button[aria-current=true]{color:var(--ink);box-shadow:inset 0 -4px 0 var(--accent)}
+.view{display:none}.view.on{display:block}
+button.b{font:600 15px var(--sans);border:2px solid var(--ink);background:var(--card);color:var(--ink);padding:10px 14px;cursor:pointer;border-radius:6px}
+button.b.pri{background:var(--ink);color:var(--paper)}
+button.b:focus-visible,nav button:focus-visible,summary:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.sheet{background:var(--card);border:1px solid var(--line);padding:12px 14px;margin:10px 0}
+details{background:var(--card);border:1px solid var(--line);margin:8px 0}
+summary{cursor:pointer;padding:12px 14px;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+summary::-webkit-details-marker{display:none}
+summary span{font-weight:500;color:var(--muted);font-size:14px;white-space:nowrap}
+details[open]>summary{border-bottom:1px solid var(--line)}
+.in{padding:4px 14px 12px}
+.in ol,.in ul{margin:4px 0 4px;padding-left:22px}
+.in li{margin:4px 0}
+.fast,.chk{border-left:5px solid var(--hlink);background:var(--hl);padding:6px 10px;margin:10px 0}
+.chk{border-left-color:var(--ok);background:transparent;border-top:1px dashed var(--line);border-bottom:1px dashed var(--line)}
+.fast b,.chk b{display:block}
+code,.m{font-family:var(--mono);font-size:.92em}
+table{border-collapse:collapse;margin:6px 0;font-family:var(--mono);font-size:13px}
+th,td{border:1px solid var(--line);padding:4px 7px;text-align:center;white-space:nowrap}
+th{background:var(--grid)}
+.wrap{overflow-x:auto;max-width:100%}
+.km td{width:54px;height:46px;font-size:17px;font-weight:700;position:relative}
+.km td i{position:absolute;top:1px;left:3px;font:400 9px var(--mono);color:var(--muted)}
+.km td.o{background:var(--hl)}.km td.x{color:var(--muted)}
+.tag{display:inline-block;border:1px solid var(--ink);padding:0 6px;font-size:12px;margin-right:4px;border-radius:3px}
+.ans{border-left:5px solid var(--ok);padding:4px 0 4px 12px;margin:12px 0}
+.q{font-size:17px}
+.timer{font-family:var(--mono);color:var(--muted)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.card{min-height:170px;border:2px solid var(--ink);background:var(--card);padding:16px;font-size:18px;display:flex;flex-direction:column;justify-content:center;cursor:pointer}
+.card small{color:var(--muted);font-size:13px;margin-bottom:6px}
+.card .bk{font-size:16px}
+select{font:16px var(--sans);padding:8px;border:2px solid var(--ink);background:var(--card);color:var(--ink);border-radius:6px}
+.good{color:var(--ok);font-weight:700}.badc{color:var(--bad);font-weight:700}
+@media (prefers-reduced-motion:no-preference){details[open] .in{animation:o .15s ease-out}@keyframes o{from{opacity:.4}to{opacity:1}}}
+</style>
+</head>
+<body>
+<main>
+<h1>DSCO drill book</h1>
+<p class="sub">Digital Systems and Computer Organization. Read a card, then drill it on paper against the clock.</p>
+
+<section id="v-plan" class="view on"></section>
+<section id="v-proc" class="view"></section>
+<section id="v-drill" class="view"></section>
+<section id="v-flash" class="view"></section>
+</main>
+<nav id="nav">
+<button data-v="plan" aria-current="true">Plan</button>
+<button data-v="proc">Procedures</button>
+<button data-v="drill">Drills</button>
+<button data-v="flash">Flash</button>
+</nav>
+<script>
+/* ===== CORE (pure logic) ===== */
+const P2=n=>Math.pow(2,n);
+const tc=(x,n)=>((x%P2(n))+P2(n))%P2(n);
+const bin=(x,n)=>tc(x,n).toString(2).padStart(n,'0');
+const sgn=(x,n)=>{x=tc(x,n);return x>=P2(n-1)?x-P2(n):x;};
+const pop=x=>{let c=0;while(x){c+=x&1;x>>=1;}return c;};
+const LET=['A','B','C','D'];
+
+function qm(n,ons,dcs){
+  ons=[...new Set(ons)].sort((a,b)=>a-b);
+  dcs=[...new Set(dcs||[])].filter(x=>!ons.includes(x)).sort((a,b)=>a-b);
+  if(!ons.length)return{n,ons,dcs,primes:[],epis:[],left:[],covers:[[]]};
+  let cur=[...new Set([...ons,...dcs])].map(m=>({v:m,d:0}));
+  const primes=[];
+  while(cur.length){
+    const used=new Set(),nxt=new Map();
+    for(let i=0;i<cur.length;i++)for(let j=i+1;j<cur.length;j++){
+      const a=cur[i],b=cur[j];if(a.d!==b.d)continue;
+      const df=a.v^b.v;
+      if(df&&!(df&(df-1))){used.add(i);used.add(j);const d=a.d|df,v=a.v&~df;nxt.set(d+','+v,{v,d});}
+    }
+    cur.forEach((c,i)=>{if(!used.has(i))primes.push(c);});
+    cur=[...nxt.values()];
+  }
+  const hit=(p,m)=>((m&~p.d)===p.v);
+  primes.forEach(p=>{p.cov=ons.filter(m=>hit(p,m));});
+  const useful=primes.filter(p=>p.cov.length);
+  const epis=[];
+  ons.forEach(m=>{const c=useful.filter(p=>p.cov.includes(m));if(c.length===1&&!epis.includes(c[0]))epis.push(c[0]);});
+  const left=ons.filter(m=>!epis.some(p=>p.cov.includes(m)));
+  const rest=useful.filter(p=>!epis.includes(p)&&p.cov.some(m=>left.includes(m)));
+  const lits=p=>n-pop(p.d);
+  let bestCost=[1e9,1e9],all=[];
+  for(let mask=0;mask<P2(rest.length);mask++){
+    const pick=rest.filter((_,i)=>(mask>>i)&1);
+    if(left.every(m=>pick.some(p=>p.cov.includes(m)))){
+      const cost=[pick.length,pick.reduce((s,p)=>s+lits(p),0)];
+      if(cost[0]<bestCost[0]||(cost[0]===bestCost[0]&&cost[1]<bestCost[1])){bestCost=cost;all=[pick];}
+      else if(cost[0]===bestCost[0]&&cost[1]===bestCost[1])all.push(pick);
+    }
+  }
+  return{n,ons,dcs,primes:useful,epis,left,covers:all.map(c=>[...epis,...c])};
+}
+function termStr(p,n){let s='';for(let i=n-1;i>=0;i--){if((p.d>>i)&1)continue;s+=LET[n-1-i]+(((p.v>>i)&1)?'':"'");}return s||'1';}
+function sumStr(p,n){const a=[];for(let i=n-1;i>=0;i--){if((p.d>>i)&1)continue;a.push(LET[n-1-i]+(((p.v>>i)&1)?"'":''));}return a.length?'('+a.join(' + ')+')':'0';}
+function pat(p,n){let s='';for(let i=n-1;i>=0;i--)s+=((p.d>>i)&1)?'-':((p.v>>i)&1);return s;}
+function sopStr(cover,n){return cover.length?cover.map(p=>termStr(p,n)).join(' + '):'0';}
+function evalCover(cover,s){return cover.some(p=>((s&~p.d)===p.v));}
+
+function booth(M,Q,n){
+  const mask=P2(n)-1,half=P2(n-1);let A=0,q=tc(Q,n),qm1=0;const m=tc(M,n),nm=tc(-M,n),rows=[];
+  for(let i=1;i<=n;i++){
+    const pair=(q&1)+''+qm1;let op='no add/sub';
+    if(pair==='10'){A=(A+nm)&mask;op='A ← A − M';}else if(pair==='01'){A=(A+m)&mask;op='A ← A + M';}
+    const Aop=A,sign=A>=half?1:0;
+    qm1=q&1;q=(q>>1)|((A&1)*half);A=(A>>1)|(sign*half);
+    rows.push({i,pair,op,Aop:bin(Aop,n),A:bin(A,n),q:bin(q,n),qm1});
+  }
+  return{rows,A,q,product:sgn(A*P2(n)+q,2*n)};
+}
+function divRestoring(Dv,Dr,n){
+  const m1=P2(n+1),mk=m1-1,qk=P2(n)-1;let A=0,Q=Dv;const rows=[];
+  for(let i=1;i<=n;i++){
+    const top=(Q>>(n-1))&1;A=((A<<1)|top)&mk;Q=(Q<<1)&qk;
+    const sh=bin(A,n+1)+' '+bin(Q,n);
+    A=(A-Dr+m1)%m1;const neg=(A>>n)&1,sub=bin(A,n+1);let act;
+    if(neg){A=(A+Dr)%m1;act='A&lt;0 → q0=0, restore A←A+M';}else{Q|=1;act='A≥0 → q0=1';}
+    rows.push({i,sh,sub,act,A:bin(A,n+1),Q:bin(Q,n)});
+  }
+  return{q:Q,r:A,rows};
+}
+function divNonRestoring(Dv,Dr,n){
+  const m1=P2(n+1),mk=m1-1,qk=P2(n)-1;let A=0,Q=Dv;const rows=[];
+  for(let i=1;i<=n;i++){
+    const wasNeg=(A>>n)&1,top=(Q>>(n-1))&1;A=((A<<1)|top)&mk;Q=(Q<<1)&qk;
+    const sh=bin(A,n+1)+' '+bin(Q,n);
+    A=wasNeg?(A+Dr)%m1:(A-Dr+m1)%m1;
+    const neg=(A>>n)&1;if(!neg)Q|=1;
+    rows.push({i,sh,op:wasNeg?'A&lt;0 → shift, A←A+M':'A≥0 → shift, A←A−M',A:bin(A,n+1),Q:bin(Q,n),q0:neg?0:1});
+  }
+  let fix=false;const before=bin(A,n+1);
+  if((A>>n)&1){A=(A+Dr)%m1;fix=true;}
+  return{q:Q,r:A,rows,fix,before,after:bin(A,n+1)};
+}
+function ieeeEnc(x){
+  const s=x<0?1:0,v=Math.abs(x);const ip=Math.floor(v);let fp=v-ip;
+  const ib=ip.toString(2);let fb='';while(fp>0&&fb.length<40){fp*=2;if(fp>=1){fb+='1';fp-=1;}else fb+='0';}
+  let e,mant;
+  if(ip>0){e=ib.length-1;mant=ib.slice(1)+fb;}else{const k=fb.indexOf('1');e=-(k+1);mant=fb.slice(k+1);}
+  const E=e+127,frac=(mant+'0'.repeat(23)).slice(0,23);
+  const bits=s+E.toString(2).padStart(8,'0')+frac;
+  let hex='';for(let i=0;i<32;i+=4)hex+=parseInt(bits.slice(i,i+4),2).toString(16).toUpperCase();
+  return{s,ib,fb:fb||'0',e,E,mant,frac,bits,hex};
+}
+function ieeeDec(bits){
+  const s=+bits[0],E=parseInt(bits.slice(1,9),2),f=bits.slice(9),e=E-127;
+  const val=(s?-1:1)*(1+parseInt(f,2)/P2(23))*P2(e);
+  return{s,E,e,f,val};
+}
+function bcdAdd(a,b){
+  const da=[a%10,Math.floor(a/10)%10],db=[b%10,Math.floor(b/10)%10];let cin=0;const steps=[];
+  for(let i=0;i<2;i++){
+    const raw=da[i]+db[i]+cin,z=raw%16,K=raw>=16?1:0;
+    const corr=(K||z>9);let out=z,cout=0;
+    if(corr){out=(z+6)%16;cout=1;}
+    steps.push({i,a:da[i],b:db[i],cin,raw,z,K,corr,out,cout});cin=cout;
+  }
+  return{steps,carry:cin,val:a+b};
+}
+function cacheSplit(A,b,c,w){const idx=c-w;return{word:b,idx,tag:A-idx-b};}
+function simCache(seq,nb,k,policy){
+  const sets=nb/k,cache=Array.from({length:sets},()=>[]);let hits=0;const rows=[];
+  for(const b of seq){
+    const s=b%sets,set=cache[s],i=set.indexOf(b);let hit=false;
+    if(i>=0){hit=true;hits++;if(policy==='LRU'){set.splice(i,1);set.push(b);}}
+    else{if(set.length>=k)set.shift();set.push(b);}
+    rows.push({b,s,hit,set:[...set]});
+  }
+  return{rows,hits,sets};
+}
+function counterDesign(n,seq,type){
+  const N=P2(n),next=new Array(N).fill(null);seq.forEach((s,i)=>{next[s]=seq[(i+1)%seq.length];});
+  const funcs=[];
+  for(let b=n-1;b>=0;b--){
+    const nm=LET[n-1-b];const ins=type==='JK'?['J','K']:[type];
+    ins.forEach(inp=>{
+      const on=[],dc=[];
+      for(let s=0;s<N;s++){
+        if(next[s]===null){dc.push(s);continue;}
+        const q=(s>>b)&1,nq=(next[s]>>b)&1;let val;
+        if(type==='T')val=q^nq;else if(type==='D')val=nq;
+        else if(inp==='J')val=q===0?nq:'X';else val=q===1?(nq===0?1:0):'X';
+        if(val==='X')dc.push(s);else if(val===1)on.push(s);
+      }
+      funcs.push({name:inp+nm,bit:b,inp,res:qm(n,on,dc),on,dc});
+    });
+  }
+  const val=(name,s)=>{const f=funcs.find(x=>x.name===name);return evalCover(f.res.covers[0],s)?1:0;};
+  const nextOf=s=>{let r=0;for(let b=0;b<n;b++){const nm=LET[n-1-b],q=(s>>b)&1;let nq;
+    if(type==='T')nq=q^val('T'+nm,s);else if(type==='D')nq=val('D'+nm,s);
+    else{const j=val('J'+nm,s),k=val('K'+nm,s);nq=(j&&!q)||(!k&&q)?1:0;}
+    r|=nq<<b;}return r;};
+  const unused=[];
+  for(let s=0;s<N;s++)if(next[s]===null){
+    const path=[s];let c=s,g=0;while(next[c]===null&&g++<N){c=nextOf(c);path.push(c);if(path.indexOf(c)!==path.length-1)break;}
+    unused.push({s,path,ok:next[c]!==null});
+  }
+  return{N,next,funcs,unused};
+}
+function muxImpl(n,ons){
+  const f=i=>ons.includes(i)?1:0,d=LET[n-1],out=[];
+  for(let i=0;i<P2(n-1);i++){const a=f(2*i),b=f(2*i+1);
+    out.push({i,a,b,in:a===b?String(a):(b?d:d+"'")});}
+  return out;
+}
+function pipeTime(k,n,stalls){return{pipe:k+n-1+stalls,non:n*k};}
+if(typeof module!=='undefined')module.exports={P2,tc,bin,sgn,qm,termStr,sumStr,pat,sopStr,evalCover,booth,divRestoring,divNonRestoring,ieeeEnc,ieeeDec,bcdAdd,cacheSplit,simCache,counterDesign,muxImpl,pipeTime};
+/* ===== END CORE ===== */
+
+</script>
+<script>
+const $=s=>document.querySelector(s);
+const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuf=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=rnd(0,i);[a[i],a[j]]=[a[j],a[i]];}return a;};
+const tbl=(h,rows)=>'<div class="wrap"><table><tr>'+h.map(x=>'<th>'+x+'</th>').join('')+'</tr>'+rows.map(r=>'<tr>'+r.map(x=>'<td>'+x+'</td>').join('')+'</tr>').join('')+'</table></div>';
+let store={};try{store=JSON.parse(localStorage.getItem('dsco')||'{}');}catch(e){}
+const save=()=>{try{localStorage.setItem('dsco',JSON.stringify(store));}catch(e){}};
+
+/* ---------- navigation ---------- */
+document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#nav button').forEach(x=>x.setAttribute('aria-current',x===b));
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+b.dataset.v));
+  window.scrollTo(0,0);
+});
+
+/* ---------- plan ---------- */
+$('#v-plan').innerHTML=`
+<h2>Marks decide where the hours go</h2>
+<div class="wrap"><table><tr><th>CO</th><th>Topics</th><th>Marks</th></tr>
+<tr><td>CO1</td><td>K-map, NAND/NOR, adders, BCD, mux, decoder, Verilog</td><td>29</td></tr>
+<tr><td>CO2</td><td>Flip-flops, sequential design, counters, registers</td><td>21</td></tr>
+<tr><td>CO3</td><td>Booth, division, floating point, control unit</td><td>25</td></tr>
+<tr><td>CO4</td><td>Cache, I/O, pipelining, parallel</td><td>15</td></tr>
+<tr><td>CO5</td><td>ISA, addressing modes, RISC vs CISC</td><td>10</td></tr></table></div>
+<h2>The loop that builds muscle memory</h2>
+<ol>
+<li>Open one card in Procedures. Read it once, 60 seconds.</li>
+<li>Go to Drills, pick that type, hit New problem.</li>
+<li>Solve on paper in the exact step format from the card. Do not peek.</li>
+<li>Hit Show solution. Compare line by line. The timer tells you how fast you were.</li>
+<li>Wrong anywhere? Same drill type again immediately. Right and inside target time? Move on.</li>
+</ol>
+<h2>24 hour schedule</h2>
+<ol>
+<li><b>Block 1 (about 3 h):</b> CO1 + CO2. K-map x8, signed overflow x4, BCD x3, mux x4, counter design x4.</li>
+<li><b>Block 2 (about 3 h):</b> CO3. Booth x8, restoring and non-restoring division x6, IEEE 754 x8.</li>
+<li><b>Block 3 (about 2 h):</b> CO4 + CO5. Cache fields x6, cache trace x5, pipeline x4, then read the ISA and control cards twice.</li>
+<li><b>Sleep 7 hours.</b> Do not skip this. Procedures get consolidated overnight.</li>
+<li><b>Morning:</b> Flash deck (only missed cards), then 2 drills of every type against the clock. Stop 1 hour before the exam.</li>
+</ol>
+<div class="fast"><b>Rule for every numerical answer</b>Write the setup line, then each step on its own line, then the boxed answer, then the check. Steps carry marks. A right answer with no steps loses them.</div>
+<div class="sheet"><b>Where this came from.</b> The digital design procedures (K-map, arithmetic circuits, combinational blocks, sequential design) follow Mano and Brown. The computer-organization procedures (Booth, division, IEEE 754, cache, pipelining, ISA) follow the standard Hamacher method the syllabus lists. If your tutorial sheets use a different table layout for Booth or division, copy their layout and keep the same logic.</div>
+<p class="sub" id="stat"></p>`;
+const showStat=()=>{const t=Object.values(store).reduce((a,b)=>a+b,0);$('#stat').textContent=t?('Drills finished on this device: '+t):'';};showStat();
+
+/* ---------- procedures ---------- */
+const PROC=[
+{t:'K-map: SOP and POS',m:'CO1',
+ steps:['Draw a 4×4 grid. Rows AB and columns CD both run <code>00 01 11 10</code> (Gray order).','Put 1 for each minterm, X for each don\'t-care, 0 elsewhere. Cell number = 4·(AB) + (CD) in decimal.','Circle groups of 16, 8, 4, 2, 1 cells. Biggest first. Rectangles only. Edges and corners wrap.','Every 1 must be covered. Use an X only when it makes a group bigger.','List all prime implicants. Mark the essential ones (a 1 covered by exactly one PI). Cover the leftover 1s with the fewest extra PIs.','Read each group: variable constant at 1 gives the letter, constant at 0 gives the letter with a prime, changing variables drop out.','SOP: OR the terms. POS: group the 0s instead, read each group as a sum (0 gives the letter, 1 gives the letter with a prime), then AND the sums.'],
+ fast:['Start with the loneliest 1 (fewest neighbours). Its group is almost always forced.','A group of 2^k cells in a 4-variable map has 4−k literals. Count before you write the term.','Four corners together = B′D′. It is the group people forget.'],
+ chk:['Plug two minterms from your list into the answer: both must give 1. Plug two zeros: both must give 0.','No group contains a 0. Group sizes add up to at least the number of 1s.']},
+{t:'NAND-only and NOR-only circuits',m:'CO1',
+ steps:['Get the minimal SOP. Draw AND-OR. Replace every gate with NAND, same wiring. NAND-NAND gives the same function.','A literal that skips straight into the second-level gate must be complemented.','For NOR-only: get the minimal POS (group the 0s). Draw OR-AND. Replace every gate with NOR. NOR-NOR gives the same function.','Multilevel: alternate NAND and NOR levels. Every bubble must meet another bubble on the same wire. If not, insert an inverter or complement the input literal.','An inverter from a NAND or NOR: tie the inputs together.'],
+ fast:['SOP maps to NAND-NAND. POS maps to NOR-NOR. Nothing else to remember.'],
+ chk:['Count bubbles on each wire between gates: it must be even. Expand your circuit back to AND-OR and compare with the original expression.']},
+{t:'Complements and signed arithmetic',m:'CO1',
+ steps:['n-bit 2\'s complement: invert every bit, add 1. Shortcut: copy bits from the right up to and including the first 1, invert the rest.','M − N: compute M + (2\'s complement of N). Carry out of the MSB = 1: drop it, the answer is positive. Carry out = 0: the answer is negative, write it as −(2\'s complement of the result).','Signed add or subtract: fix the width n first. Overflow when carry into the MSB ≠ carry out of the MSB, that is V = C<sub>n</sub> ⊕ C<sub>n−1</sub>. Range is −2^(n−1) to 2^(n−1) − 1.','1\'s complement subtraction: add the 1\'s complement. Carry out means end-around carry (add it back). No carry means negative: take the 1\'s complement of the result.','Decimal: 9\'s complement is 9 minus each digit, 10\'s complement is the 9\'s complement + 1. Same carry rules.'],
+ fast:['Overflow by sign: positive + positive = negative, or negative + negative = positive. Mixed signs can never overflow.','Sign extension copies the MSB leftwards. Never pad a negative number with zeros.'],
+ chk:['Convert the result back to decimal and compare with the decimal arithmetic. The result has exactly n bits.']},
+{t:'Adders, adder-subtractor, BCD, multiplier, comparator',m:'CO1',
+ steps:['Half adder: S = A⊕B, C = AB. Full adder: S = A⊕B⊕Cin, Cout = AB + Cin(A⊕B) = AB + ACin + BCin. A full adder is two half adders and an OR.','Ripple carry adder: chain Cout into the next Cin, LSB first. The carry delay grows with n.','Look-ahead: P<sub>i</sub> = A<sub>i</sub>⊕B<sub>i</sub>, G<sub>i</sub> = A<sub>i</sub>B<sub>i</sub>, C<sub>i+1</sub> = G<sub>i</sub> + P<sub>i</sub>C<sub>i</sub>. So C1 = G0 + P0C0, C2 = G1 + P1G0 + P1P0C0, and so on.','Adder-subtractor: XOR each B bit with M and set Cin = M. M=0 gives A+B. M=1 gives A + B′ + 1 = A − B. Overflow V = C<sub>n</sub> ⊕ C<sub>n−1</sub>.','BCD adder: add two digits + carry-in in a 4-bit binary adder, giving Z8 Z4 Z2 Z1 and carry K. If K=1 or Z &gt; 9, add 0110 with a second adder. Output carry = K + Z8Z4 + Z8Z2.','Array multiplier for a J-bit by K-bit product: J·K AND gates, (J−1) K-bit adders, product has J+K bits.','Comparator: x<sub>i</sub> = A<sub>i</sub> XNOR B<sub>i</sub>. (A=B) = x3x2x1x0. (A&gt;B) = A3B3′ + x3A2B2′ + x3x2A1B1′ + x3x2x1A0B0′.'],
+ fast:['BCD digit: sum ≤ 9 and no carry, leave it. 10 to 15, add 6. Binary carry out (16 to 19 e.g. 9+9=18), add 6 as well.'],
+ chk:['Every BCD output digit is at most 1001. Convert the BCD answer to decimal and compare.']},
+{t:'Mux, decoder, encoder',m:'CO1',
+ steps:['A 2^n:1 mux has n select lines. Output = sum of I<sub>i</sub> · (select minterm i).','Implement F of n variables on a 2^(n−1):1 mux: the first n−1 variables drive the selects. Write the truth table in pairs (last variable 0 then 1): pair (0,0) gives 0, (1,1) gives 1, (0,1) gives the last variable x, (1,0) gives x′.','Big mux from small: 4:1 from 2:1 needs 3 muxes. 16:1 from 4:1 needs 4+1 = 5. First rank takes the low select bits, last rank takes the high bits.','Decoder n to 2^n: output D<sub>i</sub> is minterm m<sub>i</sub>. Any function is the OR of its minterm outputs. If F has more 1s than 0s, OR the zeros and invert (or use a NOR).','Decoder tree: 3→8 from two 2→4 decoders with enable (MSB drives one enable directly and the other through an inverter). 4→16 from 2→4 needs 5.','Encoder 2^n to n: each output is the OR of the inputs whose index has a 1 in that bit. 8:3: A2 = D4+D5+D6+D7, A1 = D2+D3+D6+D7, A0 = D1+D3+D5+D7. Priority encoder: highest index wins, valid V = OR of all inputs.'],
+ fast:['Mux pair rule: 00 → 0, 11 → 1, 01 → x, 10 → x′. Say it out loud until automatic.'],
+ chk:['For each select combination, the mux output must equal F. Re-read two truth table rows through your circuit.']},
+{t:'Flip-flops and sequential design',m:'CO2',
+ steps:['Characteristic equations: SR: Q⁺ = S + R′Q (with SR = 0). JK: Q⁺ = JQ′ + K′Q. D: Q⁺ = D. T: Q⁺ = T⊕Q.','Excitation (Q to Q⁺): <div class="wrap"><table><tr><th>Q→Q⁺</th><th>SR</th><th>JK</th><th>D</th><th>T</th></tr><tr><td>0→0</td><td>0 X</td><td>0 X</td><td>0</td><td>0</td></tr><tr><td>0→1</td><td>1 0</td><td>1 X</td><td>1</td><td>1</td></tr><tr><td>1→0</td><td>0 1</td><td>X 1</td><td>0</td><td>1</td></tr><tr><td>1→1</td><td>X 0</td><td>X 0</td><td>1</td><td>0</td></tr></table></div>','Design order: (a) state diagram, (b) state table, (c) N states needs ⌈log2 N⌉ flip-flops, assign binary codes, (d) excitation table: add FF input columns, (e) K-map each FF input with unused states as X, (f) write equations, (g) draw the circuit, (h) check the unused states.','Moore output depends on state only. Mealy output depends on state and input.'],
+ fast:['T input = Q ⊕ Q⁺. D input = Q⁺. For JK there are only four cases: 0X, 1X, X1, X0.','Binary up counter: T0 = 1, T1 = Q0, T2 = Q0Q1, T3 = Q0Q1Q2.'],
+ chk:['Feed every state through your equations and confirm the next state. The last state must wrap to the first. Unused states must fall back into the loop.']},
+{t:'Counters and registers',m:'CO2',
+ steps:['Ripple (asynchronous) counter: FF0 takes the clock, every later FF is clocked by the previous Q (negative-edge FFs). Positive-edge FFs use Q′. J=K=1 (or T=1).','Mod-N ripple counter: use ⌈log2 N⌉ FFs. Detect the count N with a NAND of the right Q outputs and feed it to the asynchronous clear.','Synchronous counter: every FF on the same clock. Use the design procedure. Up counter T<sub>i</sub> = product of all lower bits. Down counter: all lower bits are 0.','Shift register: SISO, SIPO, PISO, PIPO. Moving k bits serially takes k clock pulses.','Ring counter: n FFs, n states, one-hot preset (1000), last Q feeds first D. Johnson counter: last Q′ feeds first D, 2n states, starts 0000 and runs 0000, 1000, 1100, 1110, 1111, 0111, 0011, 0001.'],
+ fast:['Count the states: ring is n, Johnson is 2n, binary is 2^n, mod-N leaves 2^n − N unused.'],
+ chk:['Write the full state sequence and confirm it returns to the start after the right number of clocks.']},
+{t:'Verilog patterns',m:'CO1, CO2',
+ steps:['Combinational: <code>assign y = s ? b : a;</code> or <code>always @(*)</code> with blocking <code>=</code>. Assign every output in every branch, and give <code>case</code> a <code>default</code>, or you get a latch.','Sequential: <code>always @(posedge clk)</code> with non-blocking <code>&lt;=</code>. Anything assigned inside an always block is declared <code>reg</code>.','Synchronous reset: <code>always @(posedge clk) if (rst) q &lt;= 0; else ...</code>. Asynchronous reset: <code>always @(posedge clk or negedge rstn) if (!rstn) q &lt;= 0;</code>.','Skeleton: <code>module m(input a, b, output y); ... endmodule</code>. Vectors <code>[3:0]</code>, concatenation <code>{a,b}</code>, sized literal <code>4\'b1010</code>.','D flip-flop <code>q &lt;= d;</code>. Counter <code>q &lt;= q + 1;</code>. Shift register <code>q &lt;= {q[2:0], din};</code>.','FSM: one always block for the state register, one <code>always @(*)</code> with <code>case (state)</code> for next state, one for outputs.'],
+ fast:['Equals sign in combinational blocks, arrow (&lt;=) in clocked blocks.'],
+ chk:['Each reg is assigned in exactly one always block. Sensitivity list of a clocked block has only the clock edge (plus async reset).']},
+{t:'ISA and addressing modes',m:'CO5',
+ steps:['Memory is byte-addressable, a word is 4 bytes, a word\'s address is the address of its first byte. Big-endian: MSB at the lowest address. Little-endian: LSB at the lowest address.','Instruction formats: 3-address (ADD C,A,B), 2-address (ADD A,B means A←A+B), 1-address (accumulator), 0-address (stack, PUSH/POP). For X = (A+B)×(C+D): 3-address: ADD T1,A,B; ADD T2,C,D; MUL X,T1,T2. 1-address: LOAD A; ADD B; STORE T; LOAD C; ADD D; MUL T; STORE X. 0-address: PUSH A; PUSH B; ADD; PUSH C; PUSH D; ADD; MUL; POP X.','Effective address: Immediate: operand is in the instruction. Register: Ri. Absolute: EA = address. Register indirect: EA = [Ri]. Indirect: EA = [address]. Index: EA = X + [Ri]. Base with index: EA = [Ri] + [Rj]. Base with index and offset: EA = X + [Ri] + [Rj]. Relative: EA = [PC] + X. Autoincrement: EA = [Ri], then Ri ← Ri + step. Autodecrement: Ri ← Ri − step, then EA = [Ri].','Sequencing: fetch IR ← [[PC]], PC ← PC + 4, then execute. Branch sets PC to the target. Loop = counter register, decrement, Branch&gt;0.','RISC: fixed-length instructions, load/store only, register-to-register ALU ops, few addressing modes, many registers, hardwired control, pipeline-friendly. CISC: variable length, memory operands in ALU ops, many addressing modes, complex instructions, microprogrammed control, fewer instructions per program.'],
+ fast:['Sum-of-list program skeleton: init pointer, counter and sum. Loop: load element, add to sum, advance pointer, decrement counter, branch if counter &gt; 0. Store sum.'],
+ chk:['Every register is initialised before the loop. The branch tests the counter right after the decrement. Loop runs exactly N times.']},
+{t:'Booth\'s multiplication',m:'CO3',
+ steps:['Set up: M = multiplicand (n bits), Q = multiplier (n bits), A = 0, Q₋₁ = 0, count = n. Product ends up in A:Q (2n bits).','Look at Q0 Q₋₁: <b>10</b> gives A ← A − M. <b>01</b> gives A ← A + M. <b>00 or 11</b> does nothing.','Arithmetic shift right A, Q, Q₋₁ as one chain. A\'s sign bit is copied, never zero-filled.','Repeat n times. Product = A:Q read as a 2n-bit signed number.','Recoding form: read multiplier pairs (Q<sub>i</sub>, Q<sub>i−1</sub>) with Q₋₁ = 0: 00 gives 0, 01 gives +1, 10 gives −1, 11 gives 0. Then shift-and-add 0, +M, −M.'],
+ fast:['A run of 1s costs one −M at its low end and one +M just above its high end. 0111100 recodes to +1 0 0 0 −1 0 0, which is 64 − 4 = 60.'],
+ chk:['Sign of product = sign(M) ⊕ sign(Q). M×Q in decimal equals A:Q. Every shift kept A\'s MSB. You did exactly n cycles.']},
+{t:'Division: restoring and non-restoring',m:'CO3',
+ steps:['<b>Restoring.</b> A = 0 (n+1 bits), Q = dividend, M = divisor. Repeat n times: (1) shift A:Q left one bit, (2) A ← A − M, (3) if A &lt; 0 (sign bit 1) then q0 = 0 and restore A ← A + M, else q0 = 1. End: Q = quotient, A = remainder.','<b>Non-restoring.</b> Same setup. Repeat n times: if A ≥ 0, shift A:Q left then A ← A − M. If A &lt; 0, shift left then A ← A + M. Then set q0 = 1 if A ≥ 0, else q0 = 0. After n cycles, if A &lt; 0 do A ← A + M. Q = quotient, A = remainder.'],
+ fast:['Restoring: negative result means put it back. Non-restoring: negative result means add next round instead, and repair once at the end.'],
+ chk:['dividend = quotient × divisor + remainder, and remainder &lt; divisor. A is n+1 bits: the sign bit is what you test.']},
+{t:'IEEE 754 floating point',m:'CO3',
+ steps:['Single precision: 1 sign, 8 exponent (bias 127), 23 fraction. Value = (−1)^S × 1.f × 2^(E−127). Double: 1, 11 (bias 1023), 52.','Encode: (1) sign bit, (2) |x| in binary, (3) normalise to 1.f × 2^e, (4) E = e + 127 in 8 bits, (5) f = bits after the point padded with zeros to 23, (6) write S | E | f and regroup into hex.','Special: E=0, f=0 is ±0. E=255, f=0 is ±infinity. E=255, f≠0 is NaN. E=0, f≠0 is denormal 0.f × 2^−126.','Add or subtract: (1) shift the smaller number\'s mantissa right by the exponent difference, (2) add or subtract the mantissas with signs, (3) normalise and adjust the exponent, (4) round, (5) check overflow and underflow.','Multiply: E = E1 + E2 − 127, multiply the significands, S = S1 ⊕ S2, normalise. Divide: E = E1 − E2 + 127, divide the significands.'],
+ fast:['Anchors: 1.0 = 3F800000, 2.0 = 40000000, 0.5 = 3F000000, 1.5 = 3FC00000, −1.0 = BF800000.','Negative e: E = 127 − |e|. Example 0.15625 = 1.01 × 2^−3, E = 124, hex 3E200000.'],
+ chk:['Decode your hex back to decimal. The leading 1 is hidden, so f never starts with it. E is exactly 8 bits.']},
+{t:'Control unit: hardwired and microprogrammed',m:'CO3',
+ steps:['Hardwired: control signals come from fixed logic (step counter, decoder, flags). Fast, hard to change, used in RISC.','Microprogrammed: each instruction has a microroutine in control memory (ROM). Parts: control address register (micro-PC), control memory, microinstruction register, sequencing logic. Slower, easy to modify, used in CISC.','Horizontal microinstruction: wide, one bit per control signal, high parallelism. Vertical: encoded fields, narrow, needs decoders, slower.','Wilkes design: a register and decoder select a row of matrix A (control signals) and matrix B (next address); condition inputs choose between next-address alternatives.','Booth multiplier hardware. Processing section: registers A, Q, M, flip-flop Q₋₁, adder/subtractor, down counter. Controller states: S0 start (load M and Q, A←0, Q₋₁←0, count←n), S1 decide from Q0Q₋₁ (add, subtract, or skip), S2 arithmetic shift right and count←count−1, then loop back or finish when count = 0.','Sequence controller: draw the ASM chart or state diagram first, then read next-state equations off it (one D flip-flop per state, or a counter plus decoder). Each control signal is the OR of the states that assert it.'],
+ fast:['State diagram first. The controller equations are just read off the diagram.'],
+ chk:['Every state has all its exits (count = 0 or not, and the three Q0Q₋₁ cases). No dead ends. Match your professor\'s notation for signal names, since this topic is layout-dependent.']},
+{t:'Cache memory',m:'CO4',
+ steps:['Offset (word) bits = log2(block size). Direct-mapped: <code>tag | block | word</code>, block bits = log2(number of cache blocks), tag = the rest. Fully associative: <code>tag | word</code>. k-way set-associative: <code>tag | set | word</code>, set bits = log2(blocks / k).','Mapping: memory block j goes to cache block j mod (number of blocks) in direct-mapped, and to set j mod (number of sets) in set-associative.','Trace: for each access compute the block address, find its set, hit if present. On a miss, fill; if the set is full evict by policy. LRU: least recently used. FIFO: oldest loaded. Direct-mapped has no choice.','Hit rate h = hits / accesses. Average access time = h·C + (1−h)·M, with C the cache time and M the miss penalty. Confirm which definition the question uses.','Write policies: write-through updates memory on every write. Write-back sets a dirty bit and updates memory on eviction.'],
+ fast:['Sanity: tag + index + offset = address bits. Sets × ways × block size = cache size.'],
+ chk:['Add up your three fields against the address width. In the trace, a hit does not change FIFO order but does refresh LRU order.']},
+{t:'I/O and interrupts',m:'CO4',
+ steps:['Program-controlled I/O: the CPU polls a status flag in a loop (busy waiting), e.g. wait until SIN = 1, then read DATAIN. Memory-mapped I/O uses ordinary load and store; separate I/O space uses IN and OUT.','Interrupt: device raises IRQ. CPU finishes the current instruction, saves PC (and status), jumps to the service routine, which serves the device and clears the request, then returns and restores PC.','Interrupt issues: enable and disable bit, several devices (polling or vectored), priorities, nested interrupts, daisy chain.','DMA: a controller moves a block between device and memory directly. The CPU only sets it up and gets a completion interrupt.'],
+ fast:['Polling wastes CPU time. Interrupts remove the wait. DMA removes the per-word CPU involvement.'],
+ chk:['State what is saved on interrupt entry and restored on return.']},
+{t:'Pipelining and parallel processing',m:'CO4',
+ steps:['k stages, n instructions, no stalls: cycles = k + n − 1. Non-pipelined: n·k cycles. Speedup = nk / (k + n − 1), which approaches k as n grows.','Unequal stages: clock = slowest stage + latch delay. Non-pipelined time per instruction = sum of stage delays. Pipelined total = (k + n − 1) × clock.','Hazards: data (RAW), fixed by forwarding or stalls. Control (branch), fixed by delay slots or prediction. Structural, fixed by duplicating resources. Each stall adds one cycle to the total.','Vector (SIMD): one instruction operates on many data elements at once.','Shared-memory multiprocessors: UMA (every processor sees the same memory access time) and NUMA (memory attached to nodes, access time depends on location).','Cache coherence. Write-through protocol: memory is updated on every write and other caches invalidate or update their copy. Write-back protocol: block states Invalid, Valid (clean, possibly shared), Modified (dirty, one owner). A write to a Valid block invalidates other copies. A read of a Modified block elsewhere forces a write-back.'],
+ fast:['Quick speedup limit: 5-stage pipeline can never beat 5×.'],
+ chk:['For n = 1 the pipelined time must equal k cycles.']}
+];
+$('#v-proc').innerHTML='<p class="sub">One card per problem type. Steps are in the order you should write them.</p>'+PROC.map(p=>`<details><summary>${p.t}<span>${p.m}</span></summary><div class="in"><ol>${p.steps.map(s=>'<li>'+s+'</li>').join('')}</ol><div class="fast"><b>Speed trick</b>${p.fast.join('<br>')}</div><div class="chk"><b>10-second check</b>${p.chk.join('<br>')}</div></div></details>`).join('');
+
+/* ---------- drills ---------- */
+const kmapHTML=(ons,dcs)=>{const ord=[0,1,3,2];let h='<div class="wrap"><table class="km"><tr><th>AB\\CD</th>'+ord.map(c=>'<th>'+bin(c,2)+'</th>').join('')+'</tr>';
+ ord.forEach(r=>{h+='<tr><th>'+bin(r,2)+'</th>';ord.forEach(c=>{const m=r*4+c;const o=ons.includes(m),x=dcs.includes(m);h+=`<td class="${o?'o':x?'x':''}"><i>${m}</i>${o?1:x?'X':0}</td>`;});h+='</tr>';});return h+'</table></div>';};
+const DR={};
+DR.kmap={n:'K-map: SOP and POS',t:240,gen(){
+ const pool=shuf([...Array(16).keys()]),k=rnd(6,9),d=rnd(0,3);
+ const ons=pool.slice(0,k).sort((a,b)=>a-b),dcs=pool.slice(k,k+d).sort((a,b)=>a-b),zeros=pool.slice(k+d).sort((a,b)=>a-b);
+ const r=qm(4,ons,dcs),z=qm(4,zeros,dcs);
+ const pis=r.primes.map(p=>[pat(p,4),termStr(p,4),'{'+p.cov.join(',')+'}',r.epis.includes(p)?'<span class="good">EPI</span>':'']);
+ const sop=r.covers.map(c=>'F = '+sopStr(c,4));
+ const pos='F = '+z.covers[0].map(p=>sumStr(p,4)).join('');
+ return{q:`Simplify F(A,B,C,D) = Σm(${ons.join(', ')})${dcs.length?' + d('+dcs.join(', ')+')':''}. Give the minimal SOP, then the minimal POS.`,
+ a:kmapHTML(ons,dcs)+'<h3>Prime implicants</h3>'+tbl(['ABCD','term','covers 1s','type'],pis)+'<p>Leftover after EPIs: '+(r.left.length?'{'+r.left.join(',')+'}':'none')+'</p><div class="ans"><b>SOP:</b> '+sop.join('<br>or ')+(r.covers.length>1?'<br><small>More than one minimal cover exists. Any valid one earns the marks.</small>':'')+'<br><b>POS (group the 0s):</b> '+pos+'</div><p class="m">Check: m'+ons[0]+' should give 1, m'+zeros[0]+' should give 0.</p>'};}};
+DR.signed={n:'Signed add/subtract and overflow',t:90,gen(){
+ const n=pick([4,5,6,8]),h=P2(n-1);const A=rnd(-h,h-1),B=rnd(-h,h-1),op=pick(['+','-']);
+ const a=tc(A,n),b=tc(op==='-'?-B:B,n),mask=P2(n-1)-1;
+ const sum=a+b,cn=Math.floor(sum/P2(n))%2,cn1=(((a&mask)+(b&mask))>>(n-1))&1,V=cn^cn1,res=sum%P2(n),trueV=A+(op==='-'?-B:B);
+ return{q:`Using ${n}-bit 2's complement, compute (${A}) ${op} (${B}). Show the binary work, the two carries, and state whether overflow occurs.`,
+ a:tbl(['step','value'],[['A',bin(A,n)+' ('+A+')'],[op==='-'?"B, then 2's comp of B":'B',op==='-'?bin(B,n)+' → '+bin(-B,n):bin(B,n)+' ('+B+')'],['add',bin(a,n)+' + '+bin(b,n)],['carry into MSB (C'+(n-1)+')',cn1],['carry out of MSB (C'+n+')',cn],['sum ('+n+' bits)',bin(res,n)]])+`<div class="ans">V = C<sub>${n}</sub> ⊕ C<sub>${n-1}</sub> = ${cn} ⊕ ${cn1} = <b>${V}</b> → ${V?'<span class="badc">overflow</span>: true result '+trueV+' is outside '+(-h)+' to '+(h-1):'<span class="good">no overflow</span>, result = '+sgn(res,n)}</div>`};}};
+DR.bcd={n:'BCD addition',t:90,gen(){
+ const a=rnd(10,99),b=rnd(10,99),r=bcdAdd(a,b);
+ return{q:`Add the BCD numbers ${a} and ${b}. Show each digit's 4-bit add, the correction, and the carry.`,
+ a:tbl(['digit','A','B','Cin','binary sum','K','Z>9?','+0110','digit out','Cout'],r.steps.map(s=>[s.i?'tens':'units',bin(s.a,4),bin(s.b,4),s.cin,bin(s.raw%16,4)+(s.K?' (carry 1)':''),s.K,s.z>9?'yes':'no',s.corr?'0110':'—',bin(s.out,4),s.cout]))+`<div class="ans">Result: ${r.carry?'0001 ':''}${r.steps[1].out<10?bin(r.steps[1].out,4):bin(r.steps[1].out,4)} ${bin(r.steps[0].out,4)} = <b>${a+b}</b></div><p class="m">Rule: correct when K=1 or Z8Z4 + Z8Z2 = 1.</p>`};}};
+DR.booth={n:'Booth multiplication trace',t:180,gen(){
+ const n=pick([4,5]),h=P2(n-1);let M=rnd(-h+1,h-1),Q=rnd(-h,h-1);if(!M)M=3;if(!Q)Q=-5;
+ const r=booth(M,Q,n);const qb=bin(Q,n),dig=[];for(let i=n-1;i>=0;i--){const bi=+qb[n-1-i],bp=i>0?+qb[n-i]:0;dig.push(bp-bi);}
+ return{q:`Multiply ${M} (multiplicand) by ${Q} (multiplier) using Booth's algorithm with ${n}-bit registers. Show every cycle.`,
+ a:`<p class="m">M = ${bin(M,n)}, −M = ${bin(-M,n)}, Q = ${bin(Q,n)}, A = ${'0'.repeat(n)}, Q₋₁ = 0</p>`+tbl(['cycle','Q0Q₋₁','operation','A after op','A','Q','Q₋₁'],r.rows.map(x=>[x.i,x.pair,x.op,x.Aop,x.A,x.q,x.qm1]))+`<p>Recoded multiplier (MSB to LSB): <span class="m">${dig.map(d=>d>0?'+1':d<0?'−1':'0').join(' ')}</span></p><div class="ans">A:Q = ${r.rows[n-1].A} ${r.rows[n-1].q} = <b>${r.product}</b><br>Check: ${M} × ${Q} = ${M*Q}</div>`};}};
+DR.div={n:'Division: restoring / non-restoring',t:180,gen(){
+ const n=4,Dv=rnd(5,15),Dr=rnd(2,7),meth=pick(['restoring','non-restoring']);
+ if(meth==='restoring'){const r=divRestoring(Dv,Dr,n);
+  return{q:`Divide ${Dv} by ${Dr} using the ${meth} method with n = ${n}. Show A, Q each cycle.`,a:`<p class="m">M = ${bin(Dr,n+1)}, A = 00000, Q = ${bin(Dv,n)}</p>`+tbl(['cycle','after shift (A Q)','after A−M','action','A','Q'],r.rows.map(x=>[x.i,x.sh,x.sub,x.act,x.A,x.Q]))+`<div class="ans">Quotient = ${bin(r.q,n)} = <b>${r.q}</b>, remainder = ${bin(r.r,n+1)} = <b>${r.r}</b><br>Check: ${Dr}×${r.q} + ${r.r} = ${Dr*r.q+r.r}</div>`};}
+ const r=divNonRestoring(Dv,Dr,n);
+ return{q:`Divide ${Dv} by ${Dr} using the ${meth} method with n = ${n}. Show A, Q each cycle and the final correction.`,a:`<p class="m">M = ${bin(Dr,n+1)}, A = 00000, Q = ${bin(Dv,n)}</p>`+tbl(['cycle','after shift (A Q)','operation','A','Q','q0'],r.rows.map(x=>[x.i,x.sh,x.op,x.A,x.Q,x.q0]))+`<p>Final A = ${r.before} ${r.fix?'(negative) → A ← A + M = '+r.after:'(≥ 0), no correction'}</p><div class="ans">Quotient = ${bin(r.q,n)} = <b>${r.q}</b>, remainder = <b>${r.r}</b><br>Check: ${Dr}×${r.q} + ${r.r} = ${Dr*r.q+r.r}</div>`};}};
+DR.ieee={n:'IEEE 754 encode / decode',t:150,gen(){
+ let x=(rnd(1,2047))/P2(rnd(0,6));if(Math.random()<.4)x=-x;const r=ieeeEnc(x);
+ if(Math.random()<.5)return{q:`Represent ${x} in IEEE 754 single precision. Give the bit fields and the hex.`,
+  a:tbl(['step','value'],[['sign S',r.s],['|x| in binary',r.ib+'.'+r.fb],['normalised','1.'+(r.mant||'0')+' × 2^'+r.e],['E = e + 127',r.e+' + 127 = '+r.E+' = '+bin(r.E,8)],['fraction (23 bits)',r.frac]])+`<div class="ans">${r.bits[0]} ${r.bits.slice(1,9)} ${r.bits.slice(9)}<br>Hex = <b>${r.hex}</b></div>`};
+ const d=ieeeDec(r.bits);
+ return{q:`Decode the IEEE 754 single-precision number <b class="m">0x${r.hex}</b> to decimal.`,
+  a:tbl(['field','value'],[['bits',r.bits[0]+' '+r.bits.slice(1,9)+' '+r.bits.slice(9)],['S',d.s],['E',bin(d.E,8)+' = '+d.E],['e = E − 127',d.e],['1.f','1.'+d.f.replace(/0+$/,'')]])+`<div class="ans">(−1)^${d.s} × 1.${d.f.replace(/0+$/,'')||'0'} × 2^${d.e} = <b>${d.val}</b></div>`};}};
+DR.cachef={n:'Cache address fields',t:90,gen(){
+ const A=pick([16,20,24,32]),b=rnd(2,5),c=rnd(5,8),mode=pick(['direct','2-way','4-way','fully associative']);
+ const w=mode==='direct'?0:mode==='2-way'?1:mode==='4-way'?2:c;const s=cacheSplit(A,b,c,w);
+ const addr=rnd(0,P2(Math.min(A,20))-1),ab=bin(addr,A);const tag=ab.slice(0,s.tag),idx=ab.slice(s.tag,s.tag+s.idx),off=ab.slice(A-b);
+ return{q:`Main memory is word-addressable with ${A}-bit addresses. Cache has ${P2(c)} blocks, block size ${P2(b)} words, ${mode} mapping. Find the tag, ${mode==='direct'?'block':'set'} and word field widths, and split the address 0x${addr.toString(16).toUpperCase()}.`,
+ a:tbl(['field','width','how'],[['word',s.word,'log2('+P2(b)+')'],[mode==='direct'?'block':'set',s.idx,mode==='direct'?'log2('+P2(c)+')':mode==='fully associative'?'none':'log2('+P2(c)+'/'+P2(w)+')'],['tag',s.tag,A+' − '+s.idx+' − '+s.word]])+`<div class="ans">${'tag | '+(s.idx?'index | ':'')+'word = '+s.tag+' | '+(s.idx?s.idx+' | ':'')+s.word}<br>Address ${ab}: tag ${tag||'—'}${s.idx?', index '+idx+' ('+parseInt(idx,2)+')':''}, word ${off} (${parseInt(off,2)})<br>Memory block number = ${addr>>b}${mode==='direct'?', goes to cache block '+(addr>>b)%P2(c):mode==='fully associative'?', can go anywhere':', goes to set '+(addr>>b)%(P2(c)/P2(w))}</div>`};}};
+DR.cachet={n:'Cache hit/miss trace',t:150,gen(){
+ const cfg=pick([[4,1],[4,2],[4,4],[8,2]]),pol=pick(['LRU','FIFO']);
+ const seq=[];const base=shuf([...Array(10).keys()]).slice(0,6);for(let i=0;i<14;i++)seq.push(Math.random()<.4&&seq.length?pick(seq.slice(-5)):pick(base));
+ const r=simCache(seq,cfg[0],cfg[1],pol);
+ return{q:`A cache has ${cfg[0]} blocks and is ${cfg[1]===1?'direct-mapped':cfg[1]===cfg[0]?'fully associative':cfg[1]+'-way set associative'}, using ${pol} replacement. Block accesses: ${seq.join(', ')}. Mark each access hit or miss and give the hit rate.`,
+ a:tbl(['access','set','result','set contents (oldest to newest)'],r.rows.map(x=>[x.b,x.s,x.hit?'<span class="good">hit</span>':'<span class="badc">miss</span>','['+x.set.join(', ')+']']))+`<div class="ans">Hits ${r.hits} of ${seq.length}: hit rate = <b>${(r.hits/seq.length*100).toFixed(1)}%</b> (sets = ${r.sets})</div><p class="m">${pol==='LRU'?'A hit moves the block to the newest end.':'A hit does not change the order.'} The leftmost block is the next victim.</p>`};}};
+DR.counter={n:'Synchronous counter design',t:300,gen(){
+ const n=pick([2,3,3]),L=n===2?3:rnd(5,7),type=pick(['T','JK','D']);const seq=shuf([...Array(P2(n)).keys()]).slice(0,L);
+ const d=counterDesign(n,seq,type);
+ const nm=LET.slice(0,n).join('');const rows=[];for(let i=0;i<L;i++){const s=seq[i],t=seq[(i+1)%L];const row=[bin(s,n),bin(t,n)];
+  d.funcs.forEach(f=>{const q=(s>>f.bit)&1,nq=(t>>f.bit)&1;let v;if(type==='T')v=q^nq;else if(type==='D')v=nq;else if(f.inp==='J')v=q?'X':nq;else v=q?(nq?0:1):'X';row.push(v);});rows.push(row);}
+ return{q:`Design a synchronous ${n}-bit counter using ${type} flip-flops that counts ${seq.join(' → ')} → ${seq[0]} and repeats. Unused states are don't-cares. Give the state table, the flip-flop input equations, and check the unused states.`,
+ a:`<p class="m">${L} states need ${n} flip-flops (${nm}, ${LET[0]} = MSB).</p>`+tbl(['present '+nm,'next '+nm].concat(d.funcs.map(f=>f.name)),rows)+'<div class="ans">'+d.funcs.map(f=>f.name+' = '+sopStr(f.res.covers[0],n)).join('<br>')+'</div><h3>Unused state check</h3>'+(d.unused.length?d.unused.map(u=>bin(u.s,n)+' → '+u.path.slice(1).map(x=>bin(x,n)).join(' → ')+(u.ok?' <span class="good">(self-correcting)</span>':' <span class="badc">(lock-up risk)</span>')).join('<br>'):'None, all states used.')+'<p class="m">Excitation rule used: '+(type==='T'?'T = Q ⊕ Q⁺':type==='D'?'D = Q⁺':'0→0: 0X, 0→1: 1X, 1→0: X1, 1→1: X0 (J,K)')+'</p>'};}};
+DR.mux={n:'Mux and decoder implementation',t:120,gen(){
+ const n=pick([3,3,4]),cnt=rnd(3,n===3?5:9),ons=shuf([...Array(P2(n)).keys()]).slice(0,cnt).sort((a,b)=>a-b);
+ const r=muxImpl(n,ons),sel=LET.slice(0,n-1).join(''),dv=LET[n-1];
+ return{q:`Implement F(${LET.slice(0,n).join(',')}) = Σm(${ons.join(', ')}) using a ${P2(n-1)}:1 multiplexer with ${sel} as select lines. Then show how a ${n}-to-${P2(n)} decoder would do it.`,
+ a:tbl(['select '+sel,'F when '+dv+'=0','F when '+dv+'=1','input'],r.map(x=>[bin(x.i,n-1),x.a,x.b,'I'+x.i+' = '+x.in]))+`<div class="ans">Mux inputs: ${r.map(x=>'I'+x.i+'='+x.in).join(', ')}</div><p>Decoder: ${ons.length<=P2(n-1)?'F = OR of outputs D'+ons.join(', D')+' (or NAND of the active-low outputs).':'more 1s than 0s, so OR the zero outputs D'+[...Array(P2(n)).keys()].filter(i=>!ons.includes(i)).join(', D')+' and invert (NOR).'}</p><p class="m">Pair rule: 00→0, 11→1, 01→${dv}, 10→${dv}′.</p>`};}};
+DR.pipe={n:'Pipeline timing',t:90,gen(){
+ if(Math.random()<.5){const k=pick([4,5,6]),n=pick([20,50,100,200]),st=pick([0,3,5,8]);const p=pipeTime(k,n,st);
+  return{q:`A ${k}-stage pipeline (one cycle per stage) runs ${n} instructions${st?' with '+st+' stall cycles in total':' with no stalls'}. Find the cycles needed, the non-pipelined cycles, and the speedup.`,
+  a:tbl(['quantity','working','value'],[['pipelined cycles','k + n − 1'+(st?' + stalls':'')+' = '+k+' + '+n+' − 1'+(st?' + '+st:''),p.pipe],['non-pipelined cycles','n × k = '+n+' × '+k,p.non]])+`<div class="ans">Speedup = ${p.non} / ${p.pipe} = <b>${(p.non/p.pipe).toFixed(2)}</b> (limit is ${k})</div>`};}
+ const k=4,n=pick([50,100,500]),dl=Array.from({length:k},()=>5*rnd(4,12)),L=pick([2,5]);const mx=Math.max(...dl),clk=mx+L,sum=dl.reduce((a,b)=>a+b,0),pt=(k+n-1)*clk,nt=n*sum;
+ return{q:`A 4-stage pipeline has stage delays ${dl.join(', ')} ns and a latch delay of ${L} ns per stage. Compare running ${n} instructions pipelined vs non-pipelined.`,
+ a:tbl(['quantity','working','value'],[['clock period','max stage + latch = '+mx+' + '+L,clk+' ns'],['pipelined time','(k+n−1) × clock = '+(k+n-1)+' × '+clk,pt+' ns'],['non-pipelined time','n × sum of stages = '+n+' × '+sum,nt+' ns']])+`<div class="ans">Speedup = ${nt} / ${pt} = <b>${(nt/pt).toFixed(2)}</b></div>`};}};
+
+const dkeys=Object.keys(DR);let cur=null,t0=0,tick=null,revealed=false;
+$('#v-drill').innerHTML='<p class="sub">Pick a type. Solve on paper first, then reveal.</p><div class="grid2" id="dgrid">'+dkeys.map(k=>`<button class="b" data-k="${k}">${DR[k].n}</button>`).join('')+'</div><div id="dpanel"></div>';
+document.querySelectorAll('#dgrid button').forEach(b=>b.onclick=()=>newProb(b.dataset.k));
+function newProb(k){cur=k;const p=DR[k].gen();revealed=false;t0=Date.now();clearInterval(tick);
+ $('#dpanel').innerHTML=`<div class="sheet"><h3>${DR[k].n}</h3><p class="q">${p.q}</p><p class="timer">Target ${DR[k].t} s · <span id="tm">0 s</span></p><div class="row"><button class="b pri" id="rv">Show solution</button><button class="b" id="nx">New problem</button></div><div id="sol" hidden>${p.a}</div></div>`;
+ tick=setInterval(()=>{if(!revealed)$('#tm').textContent=Math.round((Date.now()-t0)/1000)+' s';},500);
+ $('#rv').onclick=()=>{if(revealed)return;revealed=true;clearInterval(tick);const s=Math.round((Date.now()-t0)/1000);$('#tm').textContent=s+' s'+(s<=DR[k].t?' (inside target)':' (over target)');$('#sol').hidden=false;$('#sol').scrollIntoView({behavior:'smooth',block:'nearest'});store[k]=(store[k]||0)+1;save();};
+ $('#nx').onclick=()=>newProb(k);}
+
+/* ---------- flashcards ---------- */
+const FC=[
+['K-map','Gray order for K-map axes?','00, 01, 11, 10'],
+['K-map','Allowed group sizes?','1, 2, 4, 8, 16. Rectangles only. Edges and corners wrap.'],
+['K-map','Literals in a group of 2^k cells (n variables)?','n − k'],
+['K-map','POS from a K-map?','Group the 0s. Each group is a sum: 0 gives the letter, 1 gives the letter with a prime. AND the sums.'],
+['K-map','When may a don\'t-care be used?','Only if it makes a group bigger. Never need to cover it.'],
+['K-map','Essential prime implicant?','A PI that covers a 1 no other PI covers.'],
+['K-map','NAND-NAND vs NOR-NOR?','SOP → NAND-NAND. POS → NOR-NOR. Same wiring, gates swapped.'],
+['K-map','XOR and XNOR in SOP?','A⊕B = A′B + AB′. XNOR = AB + A′B′.'],
+['K-map','De Morgan?','(A+B)′ = A′B′ and (AB)′ = A′ + B′'],
+['Arithmetic','Half adder equations?','S = A⊕B, C = AB'],
+['Arithmetic','Full adder equations?','S = A⊕B⊕Cin. Cout = AB + Cin(A⊕B).'],
+['Arithmetic','Overflow detection (signed)?','V = carry into MSB ⊕ carry out of MSB. Or: same-sign operands, different-sign result.'],
+['Arithmetic','Adder-subtractor circuit?','XOR each B bit with M, Cin = M. M=1 gives A + B′ + 1.'],
+['Arithmetic','M − N with 2\'s complement, carry meaning?','Carry out = 1: drop it, result positive. No carry: result negative, take 2\'s complement of the sum.'],
+['Arithmetic','n-bit signed range?','−2^(n−1) to 2^(n−1) − 1'],
+['Arithmetic','BCD correction rule?','If sum > 9 or carry out, add 0110. Cout = K + Z8Z4 + Z8Z2.'],
+['Arithmetic','Look-ahead carry?','P = A⊕B, G = AB, C(i+1) = G(i) + P(i)C(i)'],
+['Arithmetic','Array multiplier J×K bits?','J·K AND gates, (J−1) K-bit adders, product J+K bits.'],
+['Arithmetic','2-bit comparator A>B?','x = XNOR per bit. A>B = A1B1′ + x1A0B0′.'],
+['Mux/decoder','Mux select lines for 2^n inputs?','n'],
+['Mux/decoder','Function on a 2^(n−1):1 mux: data inputs?','Each is 0, 1, x or x′ (x = last variable). Pairs: 00→0, 11→1, 01→x, 10→x′.'],
+['Mux/decoder','Muxes to build 16:1 from 4:1?','5 (4 in first rank, 1 in second)'],
+['Mux/decoder','Decoders to build 4→16 from 2→4?','5'],
+['Mux/decoder','Decoder as function generator?','OR the minterm outputs of F. If F has more 1s than 0s, OR the zeros and invert.'],
+['Mux/decoder','8:3 encoder equations?','A2 = D4+D5+D6+D7. A1 = D2+D3+D6+D7. A0 = D1+D3+D5+D7.'],
+['Mux/decoder','Priority encoder?','Highest index wins when several inputs are 1. Valid V = OR of all inputs.'],
+['Sequential','Characteristic equations SR, JK, D, T?','SR: S + R′Q. JK: JQ′ + K′Q. D: D. T: T⊕Q.'],
+['Sequential','JK excitation (Q→Q⁺)?','0→0: 0X. 0→1: 1X. 1→0: X1. 1→1: X0.'],
+['Sequential','SR excitation (Q→Q⁺)?','0→0: 0X. 0→1: 10. 1→0: 01. 1→1: X0.'],
+['Sequential','D and T excitation?','D = Q⁺. T = Q ⊕ Q⁺.'],
+['Sequential','Invalid input?','SR latch/FF: S = R = 1. JK with J = K = 1 toggles (race-around in level-triggered, fixed by edge trigger or master-slave).'],
+['Sequential','Flip-flops for N states?','⌈log2 N⌉'],
+['Sequential','Sequential design order?','State diagram, state table, state assignment, excitation table, K-maps, equations, circuit, check unused states.'],
+['Sequential','Binary up counter T inputs?','T0 = 1, T1 = Q0, T2 = Q0Q1, T3 = Q0Q1Q2. Down counter uses complements.'],
+['Sequential','Ring vs Johnson counter?','Ring: n FFs, n states, one-hot preset. Johnson: Q′ fed back, 2n states.'],
+['Sequential','Moore vs Mealy?','Moore: output depends on state only. Mealy: state and input.'],
+['Sequential','Ripple counter clocking?','Each FF is clocked by the previous FF\'s Q (negative-edge) or Q′ (positive-edge). J=K=1.'],
+['Verilog','= vs <= ?','= (blocking) in combinational always @(*). <= (non-blocking) in clocked always @(posedge clk).'],
+['Verilog','How to avoid inferred latches?','Assign every output in every branch. Add default in case. Complete sensitivity list or use @(*).'],
+['Verilog','Sync vs async reset?','Sync: reset tested inside @(posedge clk). Async: @(posedge clk or negedge rstn).'],
+['Verilog','reg vs wire?','reg: assigned inside always/initial. wire: driven by assign or module ports.'],
+['ISA','Effective address: Index?','X + [Ri]'],
+['ISA','Effective address: Base with index?','[Ri] + [Rj] (with offset: X + [Ri] + [Rj])'],
+['ISA','Effective address: Relative?','[PC] + X'],
+['ISA','Autoincrement vs autodecrement?','Autoincrement: use [Ri] then Ri ← Ri + step. Autodecrement: Ri ← Ri − step then use [Ri].'],
+['ISA','Indirect vs register indirect?','Indirect: EA = [address] (memory holds the pointer). Register indirect: EA = [Ri].'],
+['ISA','Big vs little endian?','Big: MSB at the lowest address. Little: LSB at the lowest address.'],
+['ISA','X = (A+B)×(C+D) in 0-address code?','PUSH A, PUSH B, ADD, PUSH C, PUSH D, ADD, MUL, POP X'],
+['ISA','RISC vs CISC?','RISC: fixed length, load/store, few modes, hardwired, pipelined. CISC: variable length, memory operands, many modes, microprogrammed.'],
+['ALU','Booth recoding table?','Q(i) Q(i−1): 00→0, 01→+1, 10→−1, 11→0'],
+['ALU','Booth step (register form)?','Q0Q₋₁ = 10: A←A−M. 01: A←A+M. Then arithmetic shift right A,Q,Q₋₁. Repeat n times.'],
+['ALU','Restoring division step?','Shift A:Q left, A←A−M. If A<0: q0=0 and restore A←A+M, else q0=1.'],
+['ALU','Non-restoring division step?','If A≥0: shift, A←A−M. If A<0: shift, A←A+M. q0=1 if A≥0. Final: if A<0, A←A+M.'],
+['ALU','IEEE 754 single layout and bias?','1 | 8 | 23, bias 127. Value = (−1)^S × 1.f × 2^(E−127).'],
+['ALU','IEEE 754 double layout and bias?','1 | 11 | 52, bias 1023'],
+['ALU','IEEE special values?','E=0,f=0: zero. E=all 1s,f=0: infinity. E=all 1s,f≠0: NaN. E=0,f≠0: denormal.'],
+['ALU','FP add steps?','Align exponents (shift smaller mantissa right), add, normalise, round, check overflow.'],
+['ALU','FP multiply exponent?','E = E1 + E2 − 127. Multiply significands, XOR signs.'],
+['Control','Hardwired vs microprogrammed?','Hardwired: fast, rigid, RISC. Microprogrammed: slower, flexible, easy to change, CISC.'],
+['Control','Microprogrammed unit parts?','Control address register, control memory, microinstruction register, sequencing logic.'],
+['Control','Booth controller states?','S0 init (A←0, Q₋₁←0, count←n). S1 decide add/sub/skip on Q0Q₋₁. S2 shift right, count←count−1. Done when count = 0.'],
+['Cache','Direct-mapped address fields?','tag | block | word. word = log2(block size), block = log2(number of cache blocks).'],
+['Cache','k-way set associative fields?','tag | set | word. set bits = log2(blocks / k).'],
+['Cache','Fully associative fields?','tag | word'],
+['Cache','Average access time?','h·C + (1−h)·M, with M the miss penalty (check question wording).'],
+['Cache','Replacement policies?','LRU (least recently used), FIFO (oldest loaded), random. Direct-mapped needs none.'],
+['Cache','Write-through vs write-back?','Write-through updates memory on every write. Write-back uses a dirty bit and writes on eviction.'],
+['Pipeline','Pipeline cycles and speedup?','Cycles = k + n − 1. Speedup = nk/(k+n−1), limit k.'],
+['Pipeline','Pipeline clock period?','Slowest stage delay + latch delay.'],
+['Pipeline','Hazard types?','Data (forwarding, stall), control (delay slot, prediction), structural (duplicate resources).'],
+['Parallel','UMA vs NUMA?','UMA: equal memory access time for all processors. NUMA: access time depends on where the memory sits.'],
+['Parallel','Coherence protocols?','Write-through: update memory, other caches invalidate or update. Write-back: states Invalid, Valid, Modified.'],
+['Parallel','SIMD / vector?','One instruction, many data elements at once.'],
+['I/O','Polling vs interrupt vs DMA?','Polling: CPU loops on status flag. Interrupt: device signals, CPU jumps to service routine. DMA: controller moves the block, CPU only sets up.']
+];
+const topics=['All',...new Set(FC.map(c=>c[0]))];
+$('#v-flash').innerHTML=`<div class="row"><select id="ft" aria-label="Topic">${topics.map(t=>'<option>'+t+'</option>').join('')}</select><button class="b" id="fr">Restart deck</button></div><p class="timer" id="fs"></p><div class="card" id="fc" tabindex="0" role="button" aria-label="Flip card"></div><div class="row" id="fb" hidden><button class="b" id="fm">Missed</button><button class="b pri" id="fg">Got it</button></div>`;
+let deck=[],flip=false,missed=0;
+function fstart(){const t=$('#ft').value;deck=shuf(FC.filter(c=>t==='All'||c[0]===t));missed=0;fshow();}
+function fshow(){flip=false;$('#fs').textContent=deck.length?deck.length+' left · '+missed+' missed so far':'';
+ if(!deck.length){$('#fc').innerHTML='<div class="bk"><b>Deck cleared.</b> Restart, or pick another topic.</div>';$('#fb').hidden=true;return;}
+ $('#fc').innerHTML='<small>'+deck[0][0]+'</small><div>'+deck[0][1]+'</div>';$('#fb').hidden=true;}
+function fflip(){if(!deck.length)return;flip=!flip;$('#fc').innerHTML=flip?'<small>'+deck[0][0]+'</small><div class="bk">'+deck[0][2]+'</div>':'<small>'+deck[0][0]+'</small><div>'+deck[0][1]+'</div>';$('#fb').hidden=!flip;}
+$('#fc').onclick=fflip;$('#fc').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fflip();}};
+$('#fg').onclick=()=>{deck.shift();fshow();};
+$('#fm').onclick=()=>{const c=deck.shift();missed++;deck.splice(Math.min(4,deck.length),0,c);fshow();};
+$('#fr').onclick=fstart;$('#ft').onchange=fstart;fstart();
+</script>
+</body>
+</html>
