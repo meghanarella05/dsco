@@ -1,0 +1,1780 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DSCO Exam – Model Answers</title><style>
+:root{--bg:#fff;--fg:#1f2328;--muted:#656d76;--card:#f6f8fa;--line:#d0d7de;--accent:#0b5fff}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1115;--fg:#e6e8eb;--muted:#9aa4af;--card:#181b21;--line:#2d333b;--accent:#6ea8ff}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+main{max-width:860px;margin:0 auto;padding:24px 16px 80px}
+h1{font-size:1.9rem;border-bottom:2px solid var(--accent);padding-bottom:.3em}
+h2{font-size:1.25rem;margin-top:2.2em;padding-top:.4em;border-top:1px solid var(--line)}
+h1+p,hr{color:var(--muted)}
+hr{border:0;border-top:1px solid var(--line)}
+h1[id^=unit],h1:not(:first-of-type){margin-top:2.5em;color:var(--accent)}
+pre{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px;overflow-x:auto;font-size:.85rem;line-height:1.45}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;background:var(--card);padding:.1em .3em;border-radius:4px}
+pre code{background:none;padding:0}
+.tw{overflow-x:auto;margin:1em 0}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+th{background:var(--card)}
+#top{position:fixed;right:16px;bottom:16px;background:var(--accent);color:#fff;border-radius:999px;padding:8px 14px;text-decoration:none;font-size:.85rem}
+</style></head>
+<body><main id="t"><h1 id="dsco-ces-2104-model-answers">DSCO (CES 2104) – Model Answers</h1>
+<p>Numbering matches <code>DSCO_exam_questions.md</code>. Answers are exam-style: concise, with worked examples where numericals are likely.</p>
+<hr />
+<h1 id="unit-1-combinational-logic">UNIT 1 – Combinational Logic</h1>
+<h2 id="q1-k-map-simplification-pi-and-epi">Q1. K-map simplification, PI and EPI</h2>
+<p><strong>F(A,B,C,D) = Σm(0,1,2,5,8,9,10)</strong></p>
+<pre><code>        CD
+AB     00  01  11  10
+ 00     1   1   0   1
+ 01     0   1   0   0
+ 11     0   0   0   0
+ 10     1   1   0   1
+</code></pre>
+<p>Groups:
+- m0,1,8,9 → <strong>B'C'</strong>
+- m0,2,8,10 → <strong>B'D'</strong>
+- m1,5 → <strong>A'C'D</strong></p>
+<p><strong>F = B'C' + B'D' + A'C'D</strong></p>
+<p>All three are prime implicants (can't be enlarged). Each covers a minterm no other covers (B'C' → m9, B'D' → m2/m10, A'C'D → m5), so all three are <strong>essential PIs</strong>.</p>
+<h2 id="q2-dont-cares">Q2. Don't cares</h2>
+<p><strong>F = Σm(1,3,7,11,15) + d(0,2,5)</strong>
+- Group m0,1,2,3 (using d0, d2) → <strong>A'B'</strong>
+- Group m3,7,11,15 → <strong>CD</strong>
+- d5 is not needed (left as 0).</p>
+<p><strong>F = A'B' + CD</strong></p>
+<h2 id="q3-definitions">Q3. Definitions</h2>
+<ul>
+<li><strong>Implicant</strong>: a product term (group of 1s) of the function.</li>
+<li><strong>Prime implicant (PI)</strong>: an implicant that can't be combined with another to form a larger group (the biggest possible group).</li>
+<li><strong>Essential PI (EPI)</strong>: a PI that covers at least one minterm covered by no other PI; it must appear in the minimal expression.</li>
+<li><strong>Incompletely specified function</strong>: output is "don't care" (X/d) for some input combinations that never occur. In K-maps a d can be treated as 1 or 0, whichever gives larger groups. Example: Q2.</li>
+</ul>
+<h2 id="q4-pos-form-using-k-map">Q4. POS form using K-map</h2>
+<p>For the function in Q1, group the <strong>0s</strong> (m3,4,6,7,11,12,13,14,15):
+- m4,6,12,14 → BD'; m3,7,11,15 → CD; m12–15 → AB</p>
+<p>F' = BD' + CD + AB → complement with De Morgan:</p>
+<p><strong>F = (B' + D)(C' + D')(A' + B')</strong></p>
+<h2 id="q5-nand-only-nor-only-implementation">Q5. NAND-only / NOR-only implementation</h2>
+<ul>
+<li><strong>SOP → NAND-NAND</strong>: F = AB + CD = ((AB)'·(CD)')' → three 2-input NAND gates: N1 = NAND(A,B), N2 = NAND(C,D), F = NAND(N1,N2).</li>
+<li><strong>POS → NOR-NOR</strong>: F = (A+B)(C+D) = ((A+B)' + (C+D)')' → N1 = NOR(A,B), N2 = NOR(C,D), F = NOR(N1,N2).</li>
+<li>Method for multilevel: replace every AND/OR by NAND/NAND (or NOR/NOR), add inverters wherever a literal enters at a wrong level, and double-bubble cancel.</li>
+</ul>
+<h2 id="q6-universality-of-nand-nor-is-the-dual">Q6. Universality of NAND (NOR is the dual)</h2>
+<ul>
+<li>NOT: A' = (A·A)'  (tie inputs)</li>
+<li>AND: AB = ((AB)')' → NAND followed by NAND-as-inverter</li>
+<li>OR: A + B = (A'·B')' → NAND(NAND(A,A), NAND(B,B))</li>
+</ul>
+<p>Since {AND, OR, NOT} can be built, NAND is universal. NOR: NOT = NOR(A,A), OR = NOT(NOR), AND = NOR(A',B').</p>
+<h2 id="q7-gates">Q7. Gates</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>A B</th>
+<th>AND</th>
+<th>OR</th>
+<th>NAND</th>
+<th>NOR</th>
+<th>XOR</th>
+<th>XNOR</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0 0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0 1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1 0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1 1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+<p>NOT: 0→1, 1→0. XOR = A'B + AB'; XNOR = AB + A'B'.</p>
+<h2 id="q8-half-adder-and-full-adder">Q8. Half adder and full adder</h2>
+<p><strong>Half adder</strong> (adds 2 bits): S = A⊕B, C = A·B (one XOR + one AND).</p>
+<p><strong>Full adder</strong> (adds A, B, Cin):
+| A B Cin | S | Cout |
+|-|-|-|
+| 000 | 0 | 0 |
+| 001 | 1 | 0 |
+| 010 | 1 | 0 |
+| 011 | 0 | 1 |
+| 100 | 1 | 0 |
+| 101 | 0 | 1 |
+| 110 | 0 | 1 |
+| 111 | 1 | 1 |</p>
+<p><strong>S = A⊕B⊕Cin</strong>, <strong>Cout = AB + Cin(A⊕B)</strong></p>
+<p><em>From two half adders</em>: HA1 adds A,B → S1, C1. HA2 adds S1, Cin → S, C2. <strong>Cout = C1 + C2</strong> (OR gate).</p>
+<h2 id="q9-4-bit-ripple-carry-adder">Q9. 4-bit ripple carry adder</h2>
+<p>Four full adders in cascade: Cout of stage i feeds Cin of stage i+1.</p>
+<pre><code>A3 B3   A2 B2   A1 B1   A0 B0
+ |  |    |  |    |  |    |  |
+[FA3]←C3[FA2]←C2[FA1]←C1[FA0]←C0(Cin)
+ S3      S2      S1      S0       (C4 = final carry out)
+</code></pre>
+<p><strong>Drawback:</strong> carry must ripple through all stages: total delay ≈ n × (carry delay of one FA) → slow for large n. Fix: carry look-ahead adder (Gi = AiBi, Pi = Ai⊕Bi, C(i+1) = Gi + PiCi).</p>
+<h2 id="q10-addersubtractor">Q10. Adder/Subtractor</h2>
+<p>Use one 4-bit adder with XOR gates on B inputs and mode M:
+- Bi' = Bi ⊕ M, and <strong>Cin = M</strong>
+- M=0: A + B. M=1: A + (B' ) + 1 = A − B (2's complement).
+- <strong>Overflow (signed)</strong> V = C4 ⊕ C3 (carry into MSB XOR carry out of MSB). Overflow occurs when two operands of the same sign give a result with the opposite sign.</p>
+<h2 id="q11-bcd-adder">Q11. BCD adder</h2>
+<p>Add two BCD digits with a 4-bit binary adder → sum Z3Z2Z1Z0 and carry K'. If the result is &gt; 9 or a carry is produced, add <strong>0110 (6)</strong> to correct it, with a second 4-bit adder.</p>
+<p><strong>Correction condition: C = K' + Z3Z2 + Z3Z1</strong>
+- Output carry = C; if C=1 the second adder adds 0110, else 0000.</p>
+<p>Example: 8 + 5: 1000+0101 = 1101 (13) → Z3Z2=1 → C=1 → 1101+0110 = 1 0011 → BCD 13 ✓ (carry 1, digit 3).</p>
+<p>Why 6: a 4-bit nibble has 16 values but BCD uses 10; adding 6 skips the 6 invalid codes.</p>
+<h2 id="q12-4-bit-magnitude-comparator">Q12. 4-bit magnitude comparator</h2>
+<p>Define xi = Ai ⊙ Bi (XNOR) → bit equal.
+- <strong>(A = B) = x3 x2 x1 x0</strong>
+- <strong>(A &gt; B) = A3B3' + x3A2B2' + x3x2A1B1' + x3x2x1A0B0'</strong>
+- <strong>(A &lt; B) = A3'B3 + x3A2'B2 + x3x2A1'B1 + x3x2x1A0'B0</strong></p>
+<p>Compare from MSB; the first unequal bit decides.</p>
+<h2 id="q13-44-array-multiplier">Q13. 4×4 array multiplier</h2>
+<p>Multiplicand a3a2a1a0, multiplier b3b2b1b0.
+- Partial products ai·bj generated by <strong>16 AND gates</strong>.
+- Rows are shifted and added with an array of half/full adders (about 4 HA + 8 FA) arranged in rows; carries propagate diagonally/down.
+- Output P7..P0. Combinational, fast, regular layout, but area grows as n².</p>
+<pre><code>            a3 a2 a1 a0
+          x b3 b2 b1 b0
+          -------------
+            a3b0 a2b0 a1b0 a0b0
+       a3b1 a2b1 a1b1 a0b1
+  a3b2 a2b2 a1b2 a0b2
+a3b3 a2b3 a1b3 a0b3   → added column-wise
+</code></pre>
+<h2 id="q14-verilog-full-adder-and-4-bit-ripple-adder">Q14. Verilog full adder and 4-bit ripple adder</h2>
+<pre><code class="language-verilog">module fulladd(input a, b, cin, output s, cout);
+  assign s    = a ^ b ^ cin;              // dataflow
+  assign cout = (a &amp; b) | (cin &amp; (a ^ b));
+endmodule
+
+module add4(input [3:0] a, b, input cin, output [3:0] s, output cout);
+  wire c1, c2, c3;                         // structural
+  fulladd f0(a[0], b[0], cin, s[0], c1);
+  fulladd f1(a[1], b[1], c1,  s[1], c2);
+  fulladd f2(a[2], b[2], c2,  s[2], c3);
+  fulladd f3(a[3], b[3], c3,  s[3], cout);
+endmodule
+</code></pre>
+<p>Behavioural one-liner: <code>assign {cout, s} = a + b + cin;</code></p>
+<h2 id="q15-41-mux">Q15. 4:1 MUX</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>S1 S0</th>
+<th>Y</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>00</td>
+<td>I0</td>
+</tr>
+<tr>
+<td>01</td>
+<td>I1</td>
+</tr>
+<tr>
+<td>10</td>
+<td>I2</td>
+</tr>
+<tr>
+<td>11</td>
+<td>I3</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Y = S1'S0'I0 + S1'S0 I1 + S1 S0' I2 + S1S0 I3</strong> → 4 AND (3-input) gates + one 4-input OR + 2 inverters.</p>
+<pre><code class="language-verilog">module mux4(input [3:0] I, input [1:0] S, output Y);
+  assign Y = I[S];
+endmodule
+</code></pre>
+<h2 id="q16-implement-function-with-41-mux">Q16. Implement function with 4:1 MUX</h2>
+<p><strong>F(A,B,C) = Σm(1,2,6,7)</strong>, use A,B as selects, C as data:</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>AB</th>
+<th>minterms</th>
+<th>F</th>
+<th>MUX input</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>00</td>
+<td>m0,m1</td>
+<td>C</td>
+<td>I0 = C</td>
+</tr>
+<tr>
+<td>01</td>
+<td>m2,m3</td>
+<td>C'</td>
+<td>I1 = C'</td>
+</tr>
+<tr>
+<td>10</td>
+<td>m4,m5</td>
+<td>0</td>
+<td>I2 = 0</td>
+</tr>
+<tr>
+<td>11</td>
+<td>m6,m7</td>
+<td>1</td>
+<td>I3 = 1</td>
+</tr>
+</tbody>
+</table></div>
+<p>Connect S1=A, S0=B. (An 8:1 MUX would just tie I1,I2,I6,I7 = 1 and the rest = 0.)</p>
+<h2 id="q17-161-mux-using-41-muxes">Q17. 16:1 MUX using 4:1 MUXes</h2>
+<p>Use <strong>5</strong> 4:1 MUXes: first level 4 MUXes, each takes 4 of the 16 inputs and shares select lines S1S0; the second-level MUX takes their four outputs and uses S3S2 as selects. Output = selected input.</p>
+<h2 id="q18-38-decoder-and-decoder-tree">Q18. 3:8 decoder and decoder tree</h2>
+<p>3:8 decoder with enable: Yi = E · (minterm i of A2A1A0), e.g., Y5 = E·A2A1'A0 → 8 AND gates (3-input, with E 4-input) + 3 inverters.</p>
+<p><strong>4:16 decoder from two 3:8 decoders:</strong> A3 drives the enable: decoder 1 enable = A3', decoder 2 enable = A3; A2A1A0 go to both. Outputs: D0–D7 from first, D8–D15 from second. (Alternatively 5 × 2:4 decoders: one for A3A2 enabling four others for A1A0.)</p>
+<h2 id="q19-function-using-decoder-or">Q19. Function using decoder + OR</h2>
+<p>Full adder using a 3:8 decoder (inputs A,B,Cin):
+- <strong>S = Σm(1,2,4,7)</strong> → OR of Y1,Y2,Y4,Y7
+- <strong>Cout = Σm(3,5,6,7)</strong> → OR of Y3,Y5,Y6,Y7</p>
+<p>(If the decoder has active-low outputs, use NAND gates instead of OR.)</p>
+<h2 id="q20-encoders">Q20. Encoders</h2>
+<p><strong>4:2 encoder</strong> (one-hot input):
+| D3 D2 D1 D0 | Y1 Y0 |
+|-|-|
+| 0001 | 00 |
+| 0010 | 01 |
+| 0100 | 10 |
+| 1000 | 11 |</p>
+<p>Y1 = D2 + D3, Y0 = D1 + D3.</p>
+<p><strong>Priority encoder</strong> (D3 highest priority; X = don't care) with valid bit V:
+| D3 D2 D1 D0 | Y1 Y0 | V |
+|-|-|-|
+| 0000 | XX | 0 |
+| 0001 | 00 | 1 |
+| 001X | 01 | 1 |
+| 01XX | 10 | 1 |
+| 1XXX | 11 | 1 |</p>
+<p>Y1 = D3 + D2, Y0 = D3 + D2'D1, V = D3+D2+D1+D0. Solves the problem of multiple simultaneous inputs.</p>
+<h2 id="q21-verilog-41-mux">Q21. Verilog 4:1 MUX</h2>
+<pre><code class="language-verilog">// (a) if-else
+module mux4_if(input [3:0] I, input [1:0] S, output reg Y);
+  always @(*) begin
+    if      (S == 2'b00) Y = I[0];
+    else if (S == 2'b01) Y = I[1];
+    else if (S == 2'b10) Y = I[2];
+    else                 Y = I[3];
+  end
+endmodule
+
+// (b) case
+module mux4_case(input [3:0] I, input [1:0] S, output reg Y);
+  always @(*) begin
+    case (S)
+      2'b00: Y = I[0];
+      2'b01: Y = I[1];
+      2'b10: Y = I[2];
+      2'b11: Y = I[3];
+    endcase
+  end
+endmodule
+</code></pre>
+<h2 id="q22-verilog-24-decoder-with-enable">Q22. Verilog 2:4 decoder with enable</h2>
+<pre><code class="language-verilog">module dec2to4(input [1:0] A, input E, output reg [3:0] Y);
+  always @(*) begin
+    Y = 4'b0000;
+    if (E)
+      case (A)
+        2'b00: Y = 4'b0001;
+        2'b01: Y = 4'b0010;
+        2'b10: Y = 4'b0100;
+        2'b11: Y = 4'b1000;
+      endcase
+  end
+endmodule
+</code></pre>
+<p>3:8 is identical with a 3-bit input and 8-bit output (<code>Y = 1 &lt;&lt; A</code>).</p>
+<h2 id="q23-always-block-sensitivity-list-assign-vs-always">Q23. <code>always</code> block, sensitivity list, assign vs always</h2>
+<ul>
+<li><code>always @(sensitivity list)</code> is a procedural block: executes whenever a signal in the list changes. Statements inside (if, case, loops) run sequentially, and only <strong>reg</strong> variables may be assigned.</li>
+<li>Combinational logic: <code>always @(*)</code> (all inputs), blocking <code>=</code>, and assign every output in all branches (else a latch is inferred).</li>
+<li>Sequential logic: <code>always @(posedge clk)</code> with non-blocking <code>&lt;=</code>.</li>
+</ul>
+<div class="tw"><table>
+<thead>
+<tr>
+<th><code>assign</code></th>
+<th><code>always</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Continuous assignment</td>
+<td>Procedural</td>
+</tr>
+<tr>
+<td>Drives <code>wire</code></td>
+<td>Drives <code>reg</code></td>
+</tr>
+<tr>
+<td>Single expression</td>
+<td>Multiple statements, if/case</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="q24-verilog-module-structure-modelling-styles">Q24. Verilog module structure &amp; modelling styles</h2>
+<pre><code class="language-verilog">module name (port list);
+  input / output declarations
+  wire / reg declarations
+  body (gate, assign, always, instances)
+endmodule
+</code></pre>
+<ul>
+<li><code>wire</code>: connection; driven by assign/gate/module output; no storage.</li>
+<li><code>reg</code>: variable assigned inside <code>always</code>/<code>initial</code>; holds value (becomes a flip-flop or just combinational logic depending on the block).</li>
+<li><strong>Gate-level</strong>: <code>and g1(y,a,b);</code></li>
+<li><strong>Dataflow</strong>: <code>assign y = a &amp; b;</code></li>
+<li><strong>Behavioural</strong>: <code>always @(*) if(...) ...</code></li>
+<li><strong>Structural</strong>: instantiation of lower-level modules.</li>
+</ul>
+<hr />
+<h1 id="unit-2-sequential-circuits">UNIT 2 – Sequential Circuits</h1>
+<h2 id="q25-combinational-vs-sequential">Q25. Combinational vs sequential</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Combinational</th>
+<th>Sequential</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Output depends only on present inputs</td>
+<td>Depends on present inputs <strong>and past state</strong></td>
+</tr>
+<tr>
+<td>No memory, no clock</td>
+<td>Has storage elements (latches/FFs), usually a clock</td>
+</tr>
+<tr>
+<td>Feed-forward</td>
+<td>Has feedback</td>
+</tr>
+<tr>
+<td>Adders, MUX, decoders</td>
+<td>Counters, registers, FSMs</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="q26-latches">Q26. Latches</h2>
+<p><strong>SR latch (NOR):</strong> cross-coupled NOR gates. S=R=0 hold; S=1,R=0 set (Q=1); S=0,R=1 reset (Q=0); S=R=1 invalid (both outputs 0, unpredictable on release).
+<strong>SR latch (NAND):</strong> inputs are active-low: S'R' = 11 hold, 01 set... (S'=0 sets), 10 reset, 00 invalid.</p>
+<p><strong>Gated SR latch:</strong> adds two AND/NAND gates with an enable (clock) C: latch responds only when C=1.</p>
+<p><strong>Gated D latch:</strong> D drives S, D' drives R (removes the invalid state). When C=1: Q = D (transparent); when C=0: holds.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>C D</th>
+<th>Q+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0 X</td>
+<td>Q</td>
+</tr>
+<tr>
+<td>1 0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1 1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="q27-d-t-jk-flip-flops">Q27. D, T, JK flip-flops</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>FF</th>
+<th>Truth table</th>
+<th>Characteristic equation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D</td>
+<td>D=0→Q+=0; D=1→Q+=1</td>
+<td><strong>Q+ = D</strong></td>
+</tr>
+<tr>
+<td>T</td>
+<td>T=0 hold; T=1 toggle</td>
+<td><strong>Q+ = T ⊕ Q</strong></td>
+</tr>
+<tr>
+<td>JK</td>
+<td>00 hold, 01 reset, 10 set, 11 toggle</td>
+<td><strong>Q+ = JQ' + K'Q</strong></td>
+</tr>
+<tr>
+<td>SR</td>
+<td>00 hold, 01 reset, 10 set, 11 invalid</td>
+<td>Q+ = S + R'Q, SR = 0</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Race-around in JK:</strong> with J=K=1 and level-triggered clock, if clock-high time &gt; propagation delay, output toggles repeatedly during one pulse → uncertain final state.
+<strong>Master-slave solution:</strong> two latches in series with opposite clock phases. Master samples while CLK=1, slave updates only when CLK=0, so output changes once per clock cycle. (Edge-triggering is the other solution.)</p>
+<h2 id="q28-latch-vs-flip-flop">Q28. Latch vs flip-flop</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Latch</th>
+<th>Flip-flop</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Level-sensitive (transparent while enable active)</td>
+<td>Edge-triggered (samples at a clock edge)</td>
+</tr>
+<tr>
+<td>Output may change many times during enable</td>
+<td>Changes only at the active edge</td>
+</tr>
+<tr>
+<td>Fewer gates</td>
+<td>Built from two latches (master-slave)</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="q29-conversions-use-excitation-tables">Q29. Conversions (use excitation tables)</h2>
+<p>JK excitation: Q→Q+ : 0→0: J=0,K=X; 0→1: J=1,K=X; 1→0: J=X,K=1; 1→1: J=X,K=0.
+- <strong>JK → D:</strong> J = D, K = D' (one inverter).
+- <strong>JK → T:</strong> J = K = T.
+- <strong>D → T:</strong> D = T ⊕ Q.</p>
+<h2 id="q30-shift-registers">Q30. Shift registers</h2>
+<p>n flip-flops in series, same clock; data moves one position per clock.
+- <strong>SISO</strong>: serial in, serial out (delay line).
+- <strong>SIPO</strong>: serial in, outputs of all FFs read in parallel (serial→parallel conversion).
+- <strong>PISO</strong>: parallel load via a Shift/Load control (MUX before each FF), then shifted out serially.
+- <strong>PIPO</strong>: all bits loaded and read simultaneously (basic register).</p>
+<pre><code>Din → [D FF0] → [D FF1] → [D FF2] → [D FF3] → Dout
+        ↑CLK     ↑CLK       ↑CLK       ↑CLK
+Q0..Q3 = parallel outputs (SIPO)
+</code></pre>
+<h2 id="q31-ring-and-johnson-counters">Q31. Ring and Johnson counters</h2>
+<p><strong>Ring counter</strong> (4 bits): Q3 feeds back to D0; preset to 1000.
+Sequence: 1000 → 0100 → 0010 → 0001 → 1000 (<strong>mod-4</strong>, n FFs → n states)</p>
+<p><strong>Johnson (twisted-ring) counter:</strong> inverted output Q3' feeds D0; start 0000.
+Sequence: 0000 → 1000 → 1100 → 1110 → 1111 → 0111 → 0011 → 0001 → 0000 (<strong>mod-8</strong>, n FFs → 2n states)</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th>Ring</th>
+<th>Johnson</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>States (n FFs)</td>
+<td>n</td>
+<td>2n</td>
+</tr>
+<tr>
+<td>Decoding</td>
+<td>None (one-hot)</td>
+<td>2-input AND per state</td>
+</tr>
+<tr>
+<td>Self-starting</td>
+<td>No</td>
+<td>No</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="q32-3-bit-synchronous-updown-counter-t-flip-flops">Q32. 3-bit synchronous up/down counter (T flip-flops)</h2>
+<p>Control M (M=1 up, M=0 down). A T flip-flop toggles when its T input = 1.
+- <strong>Up:</strong> Q0 toggles always; Q1 toggles when Q0=1; Q2 toggles when Q1Q0=1.
+- <strong>Down:</strong> Q1 toggles when Q0=0; Q2 toggles when Q1'Q0'=1.</p>
+<p><strong>T0 = 1</strong>
+<strong>T1 = M·Q0 + M'·Q0'</strong>
+<strong>T2 = M·Q1Q0 + M'·Q1'Q0'</strong></p>
+<p>All FFs share one clock (synchronous). For JK flip-flops use J = K = T.
+Design steps shown: state table (present → next state) → excitation values T = Q ⊕ Q+ → K-map each T → circuit.</p>
+<h2 id="q33-mod-6-synchronous-counter-t-ffs">Q33. Mod-6 synchronous counter (T FFs)</h2>
+<p>Sequence 000 → 001 → 010 → 011 → 100 → 101 → 000 (110, 111 = don't care).</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Present Q2Q1Q0</th>
+<th>Next</th>
+<th>T2 T1 T0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>000</td>
+<td>001</td>
+<td>001</td>
+</tr>
+<tr>
+<td>001</td>
+<td>010</td>
+<td>011</td>
+</tr>
+<tr>
+<td>010</td>
+<td>011</td>
+<td>001</td>
+</tr>
+<tr>
+<td>011</td>
+<td>100</td>
+<td>111</td>
+</tr>
+<tr>
+<td>100</td>
+<td>101</td>
+<td>001</td>
+</tr>
+<tr>
+<td>101</td>
+<td>000</td>
+<td>101</td>
+</tr>
+</tbody>
+</table></div>
+<p>K-maps (using don't cares 110, 111):
+- <strong>T0 = 1</strong>
+- <strong>T1 = Q2'Q0</strong>
+- <strong>T2 = Q0(Q1 + Q2)</strong></p>
+<p>Three T-FFs on a common clock. (Unused states 110/111 return to the valid sequence on their own, so it is self-correcting.)</p>
+<h2 id="q34-asynchronous-ripple-counter">Q34. Asynchronous (ripple) counter</h2>
+<p>4-bit ripple counter: four T/JK (J=K=1) flip-flops; CLK drives FF0; each next FF is clocked by the previous Q (negative-edge triggered FFs). Counts 0000 → 1111 (mod-16).</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Ripple (asynchronous)</th>
+<th>Synchronous</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Clock applied to first FF only</td>
+<td>Common clock to all FFs</td>
+</tr>
+<tr>
+<td>Delay accumulates (n·tpd)</td>
+<td>Delay = one FF delay (+ gate)</td>
+</tr>
+<tr>
+<td>Slower, glitches in decoding</td>
+<td>Faster, glitch-free</td>
+</tr>
+<tr>
+<td>Simple, no extra gates</td>
+<td>Needs extra logic (T inputs)</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="q35-ring-counter-via-counter-decoder">Q35. Ring counter via counter + decoder</h2>
+<p>Use a 2-bit binary counter driving a 2:4 decoder: as the counter counts 00,01,10,11 the decoder outputs 0001, 0010, 0100, 1000 → a one-hot ring sequence using only 2 FFs instead of 4 (n-state ring needs log2(n) FFs plus a decoder).</p>
+<h2 id="q36-sequence-detector-for-1011-mealy-overlapping">Q36. Sequence detector for 1011 (Mealy, overlapping)</h2>
+<p>States: <strong>S0</strong> = no progress, <strong>S1</strong> = "1" seen, <strong>S2</strong> = "10" seen, <strong>S3</strong> = "101" seen.</p>
+<p>State diagram (input / output):</p>
+<pre><code>S0 -0/0-&gt; S0     S0 -1/0-&gt; S1
+S1 -0/0-&gt; S2     S1 -1/0-&gt; S1
+S2 -0/0-&gt; S0     S2 -1/0-&gt; S3
+S3 -0/0-&gt; S2     S3 -1/1-&gt; S1   (1011 found; last 1 may start a new sequence)
+</code></pre>
+<p>Assignment S0=00, S1=01, S2=10, S3=11 (Q1Q0). D flip-flops:</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Q1Q0 X</th>
+<th>Q1+Q0+</th>
+<th>Z</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>00 0</td>
+<td>00</td>
+<td>0</td>
+</tr>
+<tr>
+<td>00 1</td>
+<td>01</td>
+<td>0</td>
+</tr>
+<tr>
+<td>01 0</td>
+<td>10</td>
+<td>0</td>
+</tr>
+<tr>
+<td>01 1</td>
+<td>01</td>
+<td>0</td>
+</tr>
+<tr>
+<td>10 0</td>
+<td>00</td>
+<td>0</td>
+</tr>
+<tr>
+<td>10 1</td>
+<td>11</td>
+<td>0</td>
+</tr>
+<tr>
+<td>11 0</td>
+<td>10</td>
+<td>0</td>
+</tr>
+<tr>
+<td>11 1</td>
+<td>01</td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+<p>From K-maps:
+- <strong>D1 = Q0X' + Q1Q0'X</strong>
+- <strong>D0 = X</strong>
+- <strong>Z = Q1Q0X</strong></p>
+<p>(Moore version needs a fifth state S4 "1011" with output 1 and output depends only on state.)</p>
+<h2 id="q37-mealy-vs-moore">Q37. Mealy vs Moore</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Mealy</th>
+<th>Moore</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Output = f(state, input)</td>
+<td>Output = f(state) only</td>
+</tr>
+<tr>
+<td>Fewer states</td>
+<td>Usually more states</td>
+</tr>
+<tr>
+<td>Output can change asynchronously with the input; reacts one clock earlier</td>
+<td>Outputs synchronous, glitch-free, one clock later</td>
+</tr>
+<tr>
+<td>Output written on the arcs</td>
+<td>Output written inside the state</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="q38-design-steps-for-synchronous-sequential-circuits">Q38. Design steps for synchronous sequential circuits</h2>
+<ol>
+<li>Word description → <strong>state diagram</strong>.</li>
+<li><strong>State table</strong> (present state, input → next state, output); minimise states.</li>
+<li><strong>State assignment</strong> (binary encode states).</li>
+<li>Choose flip-flop type and derive <strong>excitation table</strong>.</li>
+<li>Simplify flip-flop input equations and output equations using K-maps.</li>
+<li>Draw the logic circuit; verify by simulation.</li>
+</ol>
+<h2 id="q39-verilog-d-flip-flop-with-clear">Q39. Verilog D flip-flop with clear</h2>
+<pre><code class="language-verilog">// Synchronous clear: reset sampled only at clock edge
+module dff_sync(input D, clk, clr, output reg Q);
+  always @(posedge clk)
+    if (clr) Q &lt;= 1'b0;
+    else     Q &lt;= D;
+endmodule
+
+// Asynchronous clear: reset acts immediately
+module dff_async(input D, clk, clr, output reg Q);
+  always @(posedge clk or posedge clr)
+    if (clr) Q &lt;= 1'b0;
+    else     Q &lt;= D;
+endmodule
+</code></pre>
+<p>Difference: asynchronous reset is in the sensitivity list.</p>
+<h2 id="q40-blocking-vs-non-blocking">Q40. Blocking vs non-blocking</h2>
+<ul>
+<li><strong>Blocking (<code>=</code>):</strong> evaluated and assigned immediately, in order; next statement waits. Use for combinational logic.</li>
+<li><strong>Non-blocking (<code>&lt;=</code>):</strong> RHS evaluated now, all assignments updated at the end of the time step. Use for sequential logic.</li>
+</ul>
+<p>Example (shift):</p>
+<pre><code class="language-verilog">always @(posedge clk) begin  q1 &lt;= d;  q2 &lt;= q1;  end   // 2-stage shift register
+always @(posedge clk) begin  q1 =  d;  q2 =  q1;  end   // q2 gets d, → collapses to one FF (wrong)
+</code></pre>
+<p>Rule: <code>&lt;=</code> in clocked blocks, <code>=</code> in combinational blocks; don't mix in one block.</p>
+<h2 id="q41-register-shift-register-counter">Q41. Register, shift register, counter</h2>
+<pre><code class="language-verilog">// n-bit register with load and reset
+module reg_n #(parameter N=8)(input clk, rst, load, input [N-1:0] D, output reg [N-1:0] Q);
+  always @(posedge clk or posedge rst)
+    if (rst) Q &lt;= 0;
+    else if (load) Q &lt;= D;
+endmodule
+
+// 4-bit shift register (SIPO)
+module shreg(input clk, rst, din, output reg [3:0] Q);
+  always @(posedge clk or posedge rst)
+    if (rst) Q &lt;= 4'b0;
+    else Q &lt;= {Q[2:0], din};
+endmodule
+
+// 4-bit up counter with load and reset
+module counter(input clk, rst, load, input [3:0] D, output reg [3:0] Q);
+  always @(posedge clk or posedge rst)
+    if (rst) Q &lt;= 4'b0;
+    else if (load) Q &lt;= D;
+    else Q &lt;= Q + 1;
+endmodule
+</code></pre>
+<h2 id="q42-verilog-fsm-1011-detector-mealy">Q42. Verilog FSM – 1011 detector (Mealy)</h2>
+<pre><code class="language-verilog">module seq1011(input clk, rst, x, output reg z);
+  parameter S0=2'b00, S1=2'b01, S2=2'b10, S3=2'b11;
+  reg [1:0] state, next;
+
+  always @(posedge clk or posedge rst)        // state register
+    if (rst) state &lt;= S0; else state &lt;= next;
+
+  always @(*) begin                            // next-state + output logic
+    z = 0;
+    case (state)
+      S0: next = x ? S1 : S0;
+      S1: next = x ? S1 : S2;
+      S2: next = x ? S3 : S0;
+      S3: begin next = x ? S1 : S2; z = x; end
+      default: next = S0;
+    endcase
+  end
+endmodule
+</code></pre>
+<hr />
+<h1 id="unit-3-instruction-set-architecture-co5">UNIT 3 – Instruction Set Architecture (CO5)</h1>
+<h2 id="q43-memory-addressing-endianness">Q43. Memory addressing, endianness</h2>
+<ul>
+<li>Memory = sequence of <strong>locations</strong>, each with a unique <strong>address</strong> (0 … 2^k − 1 for k-bit address).</li>
+<li><strong>Byte-addressable</strong>: each address names one byte; a 32-bit word occupies 4 consecutive addresses and is addressed by its lowest address.</li>
+<li>Word 0x12345678 stored at address 1000:</li>
+</ul>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Address</th>
+<th>1000</th>
+<th>1001</th>
+<th>1002</th>
+<th>1003</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Big-endian</strong> (MSB at lowest address)</td>
+<td>12</td>
+<td>34</td>
+<td>56</td>
+<td>78</td>
+</tr>
+<tr>
+<td><strong>Little-endian</strong> (LSB at lowest address)</td>
+<td>78</td>
+<td>56</td>
+<td>34</td>
+<td>12</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="q44-memory-operations-alignment">Q44. Memory operations, alignment</h2>
+<ul>
+<li><strong>Load (Read):</strong> copies a word from memory to a processor register; the memory content is unchanged. Address → MAR, Read control, data returns in MDR.</li>
+<li><strong>Store (Write):</strong> copies a register's contents into a memory location, overwriting the old contents.</li>
+<li><strong>Alignment:</strong> a word is aligned if its address is a multiple of the word length (e.g., multiple of 4 for 32 bits). Unaligned access is restricted or slower in many architectures.</li>
+</ul>
+<h2 id="q45-instruction-types-sequencing-program">Q45. Instruction types, sequencing, program</h2>
+<p>Instruction types: data transfer (Move, Load, Store), arithmetic/logic (Add, Sub, AND), control/branch (Branch, Call, Return), I/O.</p>
+<p><strong>Sequencing:</strong> PC holds the address of the next instruction. Straight-line sequencing executes consecutively (PC ← PC + 4). <strong>Branch</strong> instructions load a new target into PC; <strong>conditional branches</strong> test <strong>condition code flags</strong> (N, Z, V, C) set by previous ALU operations, e.g., <code>Branch&gt;0 LOOP</code>.</p>
+<p><strong>Program: add N numbers</strong> (list starts at NUM1, count in N, result in SUM):</p>
+<pre><code>        Move    N, R1          ; R1 = count
+        Clear   R0             ; R0 = running sum
+        Move    #NUM1, R2      ; R2 = pointer to list
+LOOP:   Add     (R2)+, R0      ; R0 += next number, pointer++
+        Decrement R1
+        Branch&gt;0 LOOP
+        Move    R0, SUM
+</code></pre>
+<h2 id="q46-addressing-modes">Q46. Addressing modes</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Assembler</th>
+<th>Effective operand / address</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Immediate</td>
+<td><code>Move #200, R0</code></td>
+<td>Operand is in the instruction</td>
+</tr>
+<tr>
+<td>Register</td>
+<td><code>Move R1, R0</code></td>
+<td>Operand in register</td>
+</tr>
+<tr>
+<td>Absolute (Direct)</td>
+<td><code>Move LOC, R0</code></td>
+<td>EA = address given in instruction</td>
+</tr>
+<tr>
+<td>Register indirect</td>
+<td><code>Move (R1), R0</code></td>
+<td>EA = contents of R1</td>
+</tr>
+<tr>
+<td>Indirect (memory)</td>
+<td><code>Move @LOC, R0</code></td>
+<td>Address field points to a location holding the EA</td>
+</tr>
+<tr>
+<td>Index</td>
+<td><code>Move 20(R1), R0</code></td>
+<td>EA = R1 + 20 (arrays)</td>
+</tr>
+<tr>
+<td>Base with index</td>
+<td><code>(Ri,Rj)</code></td>
+<td>EA = Ri + Rj</td>
+</tr>
+<tr>
+<td>Relative</td>
+<td><code>X(PC)</code></td>
+<td>EA = PC + X (position-independent code, branches)</td>
+</tr>
+<tr>
+<td>Autoincrement</td>
+<td><code>(R1)+</code></td>
+<td>EA = [R1], then R1 ← R1 + size</td>
+</tr>
+<tr>
+<td>Autodecrement</td>
+<td><code>-(R1)</code></td>
+<td>R1 ← R1 − size, then EA = [R1] (stack/loops)</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="q47-risc-vs-cisc">Q47. RISC vs CISC</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>RISC</th>
+<th>CISC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Instruction set</td>
+<td>Small, simple</td>
+<td>Large, complex</td>
+</tr>
+<tr>
+<td>Instruction format</td>
+<td>Fixed length (e.g., 32-bit)</td>
+<td>Variable length</td>
+</tr>
+<tr>
+<td>Memory access</td>
+<td>Only Load/Store</td>
+<td>Many instructions can use memory operands</td>
+</tr>
+<tr>
+<td>Addressing modes</td>
+<td>Few, simple</td>
+<td>Many</td>
+</tr>
+<tr>
+<td>Registers</td>
+<td>Large register file</td>
+<td>Fewer registers</td>
+</tr>
+<tr>
+<td>Execution</td>
+<td>One instruction/cycle, easy pipelining</td>
+<td>Multi-cycle, micro-programmed often</td>
+</tr>
+<tr>
+<td>Control unit</td>
+<td>Hardwired</td>
+<td>Micro-programmed</td>
+</tr>
+<tr>
+<td>Code size</td>
+<td>Larger</td>
+<td>Smaller</td>
+</tr>
+<tr>
+<td>Examples</td>
+<td>ARM, MIPS, RISC-V</td>
+<td>x86, VAX, 68000</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="q48-c-a-b-in-both-styles">Q48. C = A + B in both styles</h2>
+<p><strong>CISC (memory operands allowed):</strong></p>
+<pre><code>Move  C, A        ; C = A
+Add   C, B        ; C = C + B
+</code></pre>
+<p><strong>RISC (load/store architecture):</strong></p>
+<pre><code>Load  R2, A
+Load  R3, B
+Add   R4, R2, R3
+Store R4, C
+</code></pre>
+<p>RISC takes more instructions but each is simple and pipelines well.</p>
+<p><strong>List addition (RISC loop):</strong></p>
+<pre><code>      Load  R2, N
+      Move  R3, #NUM1
+      Clear R4
+LOOP: Load  R5, (R3)
+      Add   R4, R4, R5
+      Add   R3, R3, #4
+      Subtract R2, R2, #1
+      Branch_if_[R2]&gt;0 LOOP
+      Store R4, SUM
+</code></pre>
+<h2 id="q49-3210-address-instructions-x-abcd">Q49. 3/2/1/0-address instructions: X = (A+B)×(C+D)</h2>
+<p><strong>3-address</strong></p>
+<pre><code>ADD R1, A, B
+ADD R2, C, D
+MUL X, R1, R2
+</code></pre>
+<p><strong>2-address</strong> (dest = dest op src)</p>
+<pre><code>MOV R1, A ; ADD R1, B ; MOV R2, C ; ADD R2, D ; MUL R1, R2 ; MOV X, R1
+</code></pre>
+<p><strong>1-address</strong> (accumulator)</p>
+<pre><code>LOAD A ; ADD B ; STORE T ; LOAD C ; ADD D ; MUL T ; STORE X
+</code></pre>
+<p><strong>0-address</strong> (stack)</p>
+<pre><code>PUSH A ; PUSH B ; ADD ; PUSH C ; PUSH D ; ADD ; MUL ; POP X
+</code></pre>
+<hr />
+<h1 id="unit-4-arithmetic-control-unit-co3">UNIT 4 – Arithmetic &amp; Control Unit (CO3)</h1>
+<h2 id="q50-booths-algorithm-7-3">Q50. Booth's algorithm: (+7) × (−3)</h2>
+<p><strong>Algorithm</strong> (n-bit): registers A = 0, Q = multiplier, Q₋₁ = 0, M = multiplicand, count = n. Repeat n times, look at (Q0, Q₋₁):
+- <code>10</code> → A = A − M
+- <code>01</code> → A = A + M
+- <code>00</code> or <code>11</code> → no operation</p>
+<p>then <strong>arithmetic shift right</strong> A, Q, Q₋₁ together (sign of A preserved).</p>
+<p>M = 0111 (+7), Q = −3 = 1101, −M = 1001. 4 bits.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Cycle</th>
+<th>Q0Q₋₁</th>
+<th>Operation</th>
+<th>A</th>
+<th>Q</th>
+<th>Q₋₁</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>init</td>
+<td></td>
+<td></td>
+<td>0000</td>
+<td>1101</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>10</td>
+<td>A = A − M</td>
+<td>1001</td>
+<td>1101</td>
+<td>0</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>ASR</td>
+<td>1100</td>
+<td>1110</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>01</td>
+<td>A = A + M</td>
+<td>0011</td>
+<td>1110</td>
+<td>1</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>ASR</td>
+<td>0001</td>
+<td>1111</td>
+<td>0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>10</td>
+<td>A = A − M</td>
+<td>1010</td>
+<td>1111</td>
+<td>0</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>ASR</td>
+<td>1101</td>
+<td>0111</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>11</td>
+<td>no op</td>
+<td>1101</td>
+<td>0111</td>
+<td>1</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>ASR</td>
+<td>1110</td>
+<td>1011</td>
+<td>1</td>
+</tr>
+</tbody>
+</table></div>
+<p>Result AQ = 1110 1011 = <strong>−21</strong> ✓</p>
+<h2 id="q51-why-booth-bit-pair-recoding">Q51. Why Booth? Bit-pair recoding</h2>
+<ul>
+<li>Handles <strong>signed (2's complement)</strong> numbers directly, no sign correction.</li>
+<li>A string of 1s in the multiplier (…0111…10…) = 2^(k+1) − 2^j: needs only one subtraction at the start of the string and one addition after it, so <strong>runs of 1s are skipped</strong>: fewer additions when the multiplier has long runs.</li>
+</ul>
+<p><strong>Bit-pair (radix-4) recoding:</strong> look at three bits (b(i+1), b(i), b(i−1)); halves the number of partial products to n/2.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>b(i+1) b(i) b(i−1)</th>
+<th>Multiplier action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>000</td>
+<td>0</td>
+</tr>
+<tr>
+<td>001</td>
+<td>+1 × M</td>
+</tr>
+<tr>
+<td>010</td>
+<td>+1 × M</td>
+</tr>
+<tr>
+<td>011</td>
+<td>+2 × M</td>
+</tr>
+<tr>
+<td>100</td>
+<td>−2 × M</td>
+</tr>
+<tr>
+<td>101</td>
+<td>−1 × M</td>
+</tr>
+<tr>
+<td>110</td>
+<td>−1 × M</td>
+</tr>
+<tr>
+<td>111</td>
+<td>0</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="q52-restoring-division-15-4">Q52. Restoring division: 15 ÷ 4</h2>
+<p><strong>Algorithm</strong> (n bits): A = 0, Q = dividend, M = divisor. Repeat n times:
+1. Shift A,Q left one bit.
+2. A = A − M.
+3. If A &lt; 0 (sign bit 1): set q0 = 0 and <strong>restore</strong> A = A + M. Else q0 = 1.</p>
+<p>Q = 1111 (15), M = 00100 (4), A = 00000:</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Step</th>
+<th>After shift (A,Q)</th>
+<th>A − M</th>
+<th>Action</th>
+<th>A</th>
+<th>Q</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>00001, 111_</td>
+<td>11101 (neg)</td>
+<td>restore, q0=0</td>
+<td>00001</td>
+<td>1110</td>
+</tr>
+<tr>
+<td>2</td>
+<td>00011, 110_</td>
+<td>11111 (neg)</td>
+<td>restore, q0=0</td>
+<td>00011</td>
+<td>1100</td>
+</tr>
+<tr>
+<td>3</td>
+<td>00111, 100_</td>
+<td>00011</td>
+<td>keep, q0=1</td>
+<td>00011</td>
+<td>1001</td>
+</tr>
+<tr>
+<td>4</td>
+<td>00111, 001_</td>
+<td>00011</td>
+<td>keep, q0=1</td>
+<td>00011</td>
+<td>0011</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Quotient = 0011 = 3, Remainder = 00011 = 3</strong> (15 = 4×3 + 3 ✓)</p>
+<p><strong>Non-restoring:</strong> no restore step. After shift: if A ≥ 0 then A = A − M, else A = A + M; q0 = 1 if the new A ≥ 0 else 0. At the end, if A &lt; 0, add M once to correct the remainder. Fewer operations per cycle.</p>
+<h2 id="q53-ieee-754">Q53. IEEE 754</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Sign</th>
+<th>Exponent</th>
+<th>Mantissa (fraction)</th>
+<th>Bias</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Single (32)</td>
+<td>1</td>
+<td>8</td>
+<td>23</td>
+<td>127</td>
+<td>(−1)^S × 1.M × 2^(E−127)</td>
+</tr>
+<tr>
+<td>Double (64)</td>
+<td>1</td>
+<td>11</td>
+<td>52</td>
+<td>1023</td>
+<td>(−1)^S × 1.M × 2^(E−1023)</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Decimal → IEEE: −13.75</strong>
+1. 13.75 = 1101.11₂ = 1.10111 × 2³
+2. Sign = 1
+3. Exponent = 3 + 127 = 130 = 10000010
+4. Mantissa = 10111 then zeros (23 bits)</p>
+<p>→ <code>1 10000010 10111000000000000000000</code> = <strong>0xC15C0000</strong></p>
+<p><strong>IEEE → decimal: 0x41200000</strong> = 0 10000010 0100…0 → exponent 130−127 = 3, mantissa 1.01₂ = 1.25 → 1.25 × 8 = <strong>10.0</strong></p>
+<h2 id="q54-floating-point-addition">Q54. Floating-point addition</h2>
+<p>Steps: (1) compare exponents; (2) <strong>shift the mantissa of the smaller number right</strong> by the difference; (3) add/subtract mantissas; (4) <strong>normalise</strong> (shift, adjust exponent); (5) round; check overflow/underflow.</p>
+<p>Example: 9.75 + 0.5625
+- 9.75 = 1.00111 × 2³; 0.5625 = 1.001 × 2⁻¹
+- Exponent difference = 4 → shift second mantissa right 4: 0.0001001 × 2³
+- Add: 1.0011100 + 0.0001001 = 1.0100101 × 2³ (already normalised)
+- = 1010.0101₂ = <strong>10.3125</strong> ✓</p>
+<h2 id="q55-fp-multiplicationdivision-special-values-rounding">Q55. FP multiplication/division, special values, rounding</h2>
+<ul>
+<li><strong>Multiply:</strong> add exponents (subtract bias once), multiply mantissas, XOR signs, normalise, round. <strong>Divide:</strong> subtract exponents (add bias), divide mantissas.</li>
+<li><strong>Special values (single precision):</strong></li>
+</ul>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Exponent</th>
+<th>Fraction</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>±0</td>
+</tr>
+<tr>
+<td>0</td>
+<td>≠0</td>
+<td>Denormal (0.M × 2⁻¹²⁶)</td>
+</tr>
+<tr>
+<td>255</td>
+<td>0</td>
+<td>±∞</td>
+</tr>
+<tr>
+<td>255</td>
+<td>≠0</td>
+<td>NaN</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Guard bits</strong> (extra bits G, R, sticky) kept during alignment shift to preserve accuracy before rounding.</li>
+<li><strong>Rounding modes:</strong> round to nearest even (default), toward 0 (truncate), toward +∞, toward −∞.</li>
+</ul>
+<h2 id="q56-processing-section-datapath-of-booth-multiplier">Q56. Processing section (datapath) of Booth multiplier</h2>
+<p>Components:
+- <strong>M register</strong> (multiplicand), n bits
+- <strong>A register</strong> (accumulator, upper product) with parallel load and <strong>arithmetic shift right</strong>
+- <strong>Q register</strong> (multiplier / lower product) shift right; LSB Q0
+- <strong>Q₋₁ flip-flop</strong> (receives the bit shifted out of Q0)
+- <strong>n-bit adder/subtractor</strong> (A ± M; subtract = add 2's complement)
+- <strong>Counter C</strong> initialised to n, decremented every cycle; <strong>Z</strong> = count finished flag</p>
+<pre><code>   M ───────┐
+            ▼
+         [Adder/Sub] ←(Add/Sub control)
+            ▲  │
+   A ───────┘  ▼ (load A)
+   A ──► ASR chain: A → Q → Q-1
+   Q0, Q-1 → controller     Z (counter=0) → controller
+</code></pre>
+<p>Control signals: Load M, Init (A←0, Q₋₁←0, C←n), AddM, SubM, Shift (ASR + decrement C), Done. Status inputs: Q0, Q₋₁, Z.</p>
+<h2 id="q57-hardwired-controller-for-booth-multiplier">Q57. Hardwired controller for Booth multiplier</h2>
+<p><strong>State/ASM chart:</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>State</th>
+<th>Action</th>
+<th>Next</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S0</td>
+<td>Idle, wait</td>
+<td>Start=1 → S1</td>
+</tr>
+<tr>
+<td>S1</td>
+<td>Init: A←0, Q₋₁←0, C←n, load M,Q</td>
+<td>S2</td>
+</tr>
+<tr>
+<td>S2</td>
+<td>Decision on Q0Q₋₁</td>
+<td>01 → S3; 10 → S4; 00/11 → S5</td>
+</tr>
+<tr>
+<td>S3</td>
+<td>A ← A + M</td>
+<td>S5</td>
+</tr>
+<tr>
+<td>S4</td>
+<td>A ← A − M</td>
+<td>S5</td>
+</tr>
+<tr>
+<td>S5</td>
+<td>ASR(A,Q,Q₋₁); C ← C−1</td>
+<td>Z=1 → S6; else S2</td>
+</tr>
+<tr>
+<td>S6</td>
+<td>Done=1</td>
+<td>S0</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Control outputs:</strong> Init = S1, Add = S3, Sub = S4, Shift/Dec = S5, Done = S6.</p>
+<p><strong>One flip-flop per state (one-hot) equations:</strong>
+- D(S0) = S0·Start′ + S6
+- D(S1) = S0·Start
+- D(S2) = S1 + S5·Z′
+- D(S3) = S2·Q0′·Q₋₁
+- D(S4) = S2·Q0·Q₋₁′
+- D(S5) = S2·(Q0 ⊙ Q₋₁) + S3 + S4
+- D(S6) = S5·Z</p>
+<p>(Z is the counter's terminal-count flag, i.e., this S5 pass is the nth shift.) Implemented with gates + flip-flops (or a sequence counter + decoder): fast, but fixed hardware.</p>
+<h2 id="q58-micro-programmed-control-organization">Q58. Micro-programmed control organization</h2>
+<ul>
+<li><strong>Microinstruction</strong>: a control word specifying which control signals are asserted in one clock step (+ next-address info).</li>
+<li><strong>Microprogram</strong>: sequence of microinstructions implementing one machine instruction; stored in <strong>control store (ROM)</strong>.</li>
+<li>Organization: <strong>IR → Starting-address generator → µPC (µAR) → Control store → Microinstruction register (µIR) → control signals</strong> to datapath. µPC normally increments; branches load new address from the address field/starting-address generator, using condition codes/status.</li>
+<li>Execution: fetch microinstruction → decode/issue control signals → compute next µPC.</li>
+</ul>
+<h2 id="q59-wilkes-design">Q59. Wilkes' design</h2>
+<p>Early microprogram design. Control store is a two-section matrix (diode array) plus a register:
+- <strong>Matrix A</strong>: each row = one microinstruction's <strong>control signals</strong> (a 1 at a crosspoint asserts the signal).
+- <strong>Matrix B</strong>: each row = <strong>address of the next microinstruction</strong>.
+- A <strong>microinstruction address register</strong> + decoder selects exactly one row.
+- <strong>Conditional branching:</strong> an external condition bit is <strong>ORed with the low bits</strong> of the next-address to choose between two successor addresses.
+- A clock pulse (two-phase) loads the next address into the register and applies the control signals to the datapath.</p>
+<p>Advantage: simple, regular structure; the control sequence changes by changing the matrix contents.</p>
+<h2 id="q60-micro-programmed-controller-for-booth-multiplier">Q60. Micro-programmed controller for Booth multiplier</h2>
+<p><strong>Microinstruction format:</strong> | Control bits: Init, AddM, SubM, ASR/DecC, Done | Condition select | Next-address(es) |</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Addr</th>
+<th>Control signals</th>
+<th>Branch / Next</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>none</td>
+<td>if Start=0 → 0, else → 1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Init (A←0, Q₋₁←0, C←n)</td>
+<td>→ 2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>none (decision)</td>
+<td>Q0Q₋₁ = 01 → 3; 10 → 4; else → 5</td>
+</tr>
+<tr>
+<td>3</td>
+<td>AddM (A←A+M)</td>
+<td>→ 5</td>
+</tr>
+<tr>
+<td>4</td>
+<td>SubM (A←A−M)</td>
+<td>→ 5</td>
+</tr>
+<tr>
+<td>5</td>
+<td>ASR, DecC</td>
+<td>if Z=0 → 2, else → 6</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Done</td>
+<td>→ 0</td>
+</tr>
+</tbody>
+</table></div>
+<p>µPC + control store (ROM, 7 words) + condition-select multiplexer (selects Start, Q0Q₋₁ decode or Z) generates next address; µIR drives the datapath signals.</p>
+<h2 id="q61-hardwired-vs-micro-programmed">Q61. Hardwired vs micro-programmed</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Hardwired</th>
+<th>Micro-programmed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Implementation</td>
+<td>Gates, flip-flops</td>
+<td>Control store (ROM) + µPC</td>
+</tr>
+<tr>
+<td>Speed</td>
+<td><strong>Faster</strong></td>
+<td>Slower (memory fetch per µinstruction)</td>
+</tr>
+<tr>
+<td>Flexibility</td>
+<td>Hard to change/modify (redesign)</td>
+<td><strong>Easy to modify/extend</strong> (change microcode)</td>
+</tr>
+<tr>
+<td>Complexity/design</td>
+<td>Complex for large ISA</td>
+<td>Systematic, simpler for CISC</td>
+</tr>
+<tr>
+<td>Cost</td>
+<td>Cheaper for small ISA</td>
+<td>Costlier (ROM)</td>
+</tr>
+<tr>
+<td>Used in</td>
+<td>RISC</td>
+<td>CISC</td>
+</tr>
+<tr>
+<td>Debugging</td>
+<td>Difficult</td>
+<td>Easier</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="q62-horizontal-vs-vertical-microinstructions-sequencing">Q62. Horizontal vs vertical microinstructions; sequencing</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Horizontal</th>
+<th>Vertical</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wide, 1 bit per control signal</td>
+<td>Encoded fields (decoder needed)</td>
+</tr>
+<tr>
+<td>Many signals in parallel, high parallelism</td>
+<td>Few signals per word, less parallelism</td>
+</tr>
+<tr>
+<td>Faster, no decoders</td>
+<td>Slower (decoding delay)</td>
+</tr>
+<tr>
+<td>Larger control store</td>
+<td>Smaller control store</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Sequencing:</strong> µPC normally increments; branch via next-address field/conditional branching; <code>microprogram call/return</code> via subroutine registers; each machine opcode maps to a starting microaddress.</p>
+<h2 id="q63-instruction-execution-and-single-bus-datapath">Q63. Instruction execution and single-bus datapath</h2>
+<p>Cycle: <strong>Fetch → Decode → Execute → (Write-back/Store)</strong>.</p>
+<p><strong>Fetch (every instruction):</strong>
+1. PC_out, MAR_in, Read, Select4, Add, Z_in
+2. Z_out, PC_in, Y_in, WMFC (wait for memory)
+3. MDR_out, IR_in</p>
+<p><strong>Execute <code>Add R1, R2</code> (R1 ← R1 + R2):</strong>
+1. R1_out, Y_in
+2. R2_out, SelectY, Add, Z_in
+3. Z_out, R1_in, End</p>
+<p>All register transfers use one internal bus, so one transfer per clock; Y holds one ALU operand, Z holds the result.</p>
+<hr />
+<h1 id="unit-5-memory-io-parallel-processing-co4">UNIT 5 – Memory, I/O &amp; Parallel Processing (CO4)</h1>
+<h2 id="q64-cache-memory-locality-hit-ratio">Q64. Cache memory, locality, hit ratio</h2>
+<ul>
+<li><strong>Cache</strong>: small, fast memory between CPU and main memory holding recently used instructions/data.</li>
+<li><strong>Locality of reference:</strong></li>
+<li><em>Temporal</em>: recently used items will likely be used again soon (loops).</li>
+<li><em>Spatial</em>: items near a recently used address will likely be used soon (sequential code, arrays) → whole <strong>blocks</strong> are fetched.</li>
+<li><strong>Hit</strong> = requested word found in cache; <strong>miss</strong> = not found (fetch block from memory).</li>
+<li><strong>Hit ratio h = hits / total accesses</strong>; miss rate = 1 − h.</li>
+</ul>
+<h2 id="q65-cache-mapping-functions">Q65. Cache mapping functions</h2>
+<p>Main memory address = Tag | Index/Block/Set | Word (offset).</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th>Direct</th>
+<th>Associative (fully)</th>
+<th>Set-associative (k-way)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Placement</td>
+<td>Block j → cache line (j mod #lines)</td>
+<td>Any line</td>
+<td>Block j → set (j mod #sets), any line in set</td>
+</tr>
+<tr>
+<td>Address fields</td>
+<td>Tag, Block(line), Word</td>
+<td>Tag, Word</td>
+<td>Tag, Set, Word</td>
+</tr>
+<tr>
+<td>Comparison</td>
+<td>1 tag</td>
+<td>All tags in parallel</td>
+<td>k tags</td>
+</tr>
+<tr>
+<td>Replacement needed</td>
+<td>No (fixed place)</td>
+<td>Yes</td>
+<td>Yes (within set)</td>
+</tr>
+<tr>
+<td>Hardware cost</td>
+<td>Lowest</td>
+<td>Highest</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Conflict misses</td>
+<td>Highest</td>
+<td>None</td>
+<td>Reduced</td>
+</tr>
+<tr>
+<td>Hit ratio</td>
+<td>Lowest</td>
+<td>Best</td>
+<td>Close to associative</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="q66-numerical-address-field-breakup-and-hitmiss-trace">Q66. Numerical: address field breakup and hit/miss trace</h2>
+<p><strong>Given:</strong> Main memory 64K words (16-bit address), cache 1K words, block 16 words.
+- Word field = log2(16) = 4 bits. Cache lines = 1K/16 = 64.
+- <strong>Direct:</strong> block field = 6, tag = 16 − 6 − 4 = <strong>6</strong> → Tag(6) | Block(6) | Word(4)
+- <strong>Associative:</strong> tag = 16 − 4 = <strong>12</strong> → Tag(12) | Word(4)
+- <strong>4-way set-associative:</strong> sets = 64/4 = 16 → set field 4, tag = 16 − 4 − 4 = <strong>8</strong> → Tag(8) | Set(4) | Word(4)</p>
+<p>(Formula: tag = address bits − index bits − offset bits.)</p>
+<p><strong>Trace:</strong> cache of 4 blocks, block-address sequence <strong>0, 8, 0, 6, 8</strong>
+- <em>Direct mapped</em> (line = addr mod 4): 0→L0 miss; 8→L0 miss (evicts 0); 0→L0 miss; 6→L2 miss; 8→L0 miss. <strong>0 hits, 5 misses.</strong>
+- <em>2-way set-associative, LRU</em> (set = addr mod 2): 0 miss [S0:0]; 8 miss [0,8]; 0 <strong>hit</strong>; 6 miss (evict LRU 8) [0,6]; 8 miss (evict 0). <strong>1 hit, 4 misses.</strong></p>
+<h2 id="q67-replacement-strategies">Q67. Replacement strategies</h2>
+<ul>
+<li><strong>FIFO</strong>: replace the block that has been in the cache longest.</li>
+<li><strong>LRU</strong>: replace the least recently used block (best approximation of optimal; implemented with counters/age bits).</li>
+<li><strong>Random</strong>: replace a random block (simple, performs surprisingly well).</li>
+</ul>
+<p><strong>Reference string</strong> 7,0,1,2,0,3,0,4,2,3,0,3,2 with 3 frames:
+- <strong>FIFO:</strong> 7M 0M 1M 2M(evict 7) 0H 3M(evict 0) 0M(evict 1) 4M(evict 2) 2M(evict 3) 3M(evict 0) 0M(evict 4) 3H 2H → <strong>10 misses, 3 hits</strong>
+- <strong>LRU:</strong> 7M 0M 1M 2M(evict 7) 0H 3M(evict 1) 0H 4M(evict 2) 2M(evict 3) 3M(evict 0) 0M(evict 4) 3H 2H → <strong>9 misses, 4 hits</strong></p>
+<h2 id="q68-write-policies-amat">Q68. Write policies, AMAT</h2>
+<ul>
+<li><strong>Write-through</strong>: every write updates both cache and main memory. Memory always consistent, simple, but more memory traffic (write buffer helps).</li>
+<li><strong>Write-back (copy-back)</strong>: write only the cache; set a <strong>dirty bit</strong>; write block to memory only when replaced. Less traffic; memory may be stale (matters for I/O and multiprocessors).</li>
+<li><strong>AMAT = hit time + miss rate × miss penalty</strong>
+  Example: hit time 2 ns, h = 0.95, memory penalty 50 ns → AMAT = 2 + 0.05 × 50 = <strong>4.5 ns</strong>.</li>
+</ul>
+<h2 id="q69-cache-coherence">Q69. Cache coherence</h2>
+<p>Problem: in a multiprocessor each processor has a private cache, so copies of the same block can become inconsistent.
+- <strong>Write-through protocol:</strong> a write goes to memory; other caches holding that block must be <strong>invalidated</strong> (or updated) so they don't use stale data.
+- <strong>Write-back protocol:</strong> a writer first obtains <strong>ownership</strong>: other copies are invalidated; block marked modified/dirty; other processors' reads are served from the owner's cache (or after write-back).
+- Snooping (bus-based) or directory-based mechanisms detect writes to shared blocks.</p>
+<h2 id="q70-io-interface-program-controlled-io">Q70. I/O interface, program-controlled I/O</h2>
+<ul>
+<li>I/O interface (device interface circuit) contains <strong>data register, status register (ready flags), control register</strong>, address decoder, and control logic; it translates between the device and processor bus.</li>
+<li><strong>Program-controlled I/O (polling):</strong> processor repeatedly <strong>tests the status flag</strong> (e.g., input ready/SIN) in a loop, then reads/writes the data register. Simple but wastes CPU time on waiting.</li>
+</ul>
+<pre><code>WAIT: Read  STATUS
+      Test bit (SIN)
+      Branch=0 WAIT
+      Read  DATAIN
+</code></pre>
+<h2 id="q71-interrupts">Q71. Interrupts</h2>
+<ul>
+<li>Device sends an <strong>interrupt request</strong> when ready; processor finishes the current instruction, saves PC/status, runs the <strong>interrupt-service routine (ISR)</strong>, then returns (Return-from-interrupt).</li>
+<li><strong>Handling:</strong> (1) acknowledge, (2) save context, (3) identify the source, (4) execute ISR, (5) restore and resume. Interrupts can be enabled/disabled.</li>
+<li><strong>Vectored interrupts:</strong> device supplies a vector (address of ISR) directly → fast source identification. Non-vectored: software polls devices.</li>
+<li><strong>Priority:</strong> simultaneous requests resolved by priority (daisy chain or priority encoder); higher priority can nest.</li>
+<li><strong>Interrupt latency</strong> = delay between request and the start of the ISR.</li>
+</ul>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Polling</th>
+<th>Interrupt-driven</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU keeps checking</td>
+<td>Device notifies CPU</td>
+</tr>
+<tr>
+<td>CPU time wasted</td>
+<td>CPU does useful work meanwhile</td>
+</tr>
+<tr>
+<td>Simple</td>
+<td>Needs ISR, context saving</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="q72-dma-brief">Q72. DMA (brief)</h2>
+<p>A <strong>DMA controller</strong> transfers a block of data between I/O device and memory <strong>without CPU involvement per word</strong>. CPU programs the DMA with start address, word count and direction; DMA acquires the bus (cycle stealing or burst), transfers, and interrupts CPU when finished. Best for high-speed block transfers.</p>
+<h2 id="q73-pipelining">Q73. Pipelining</h2>
+<ul>
+<li>Pipelining overlaps instruction execution by dividing it into stages; each stage works on a different instruction in the same clock cycle → throughput of ≈ one instruction per cycle.</li>
+<li><strong>5-stage pipeline:</strong> IF (fetch) → ID (decode/register read) → EX (ALU) → MEM (memory access) → WB (write-back). Pipeline registers separate stages.</li>
+</ul>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Cycle</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>I1</td>
+<td>IF</td>
+<td>ID</td>
+<td>EX</td>
+<td>MEM</td>
+<td>WB</td>
+<td></td>
+</tr>
+<tr>
+<td>I2</td>
+<td></td>
+<td>IF</td>
+<td>ID</td>
+<td>EX</td>
+<td>MEM</td>
+<td>WB</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><strong>Hazards:</strong></li>
+<li><em>Structural:</em> two instructions need the same hardware resource. Fix: duplicate resources (separate I/D caches).</li>
+<li><em>Data:</em> instruction depends on result of an earlier one (RAW). Fix: forwarding/bypassing, stalls (NOP), compiler scheduling.</li>
+<li><em>Control:</em> branches change PC. Fix: branch prediction, delayed branch, flush.</li>
+</ul>
+<h2 id="q74-pipeline-speed-up">Q74. Pipeline speed-up</h2>
+<p>For k stages, n tasks, clock period tp:
+- Non-pipelined time = n · k · tp
+- Pipelined time = (k + n − 1) · tp
+- <strong>Speed-up S = nk / (k + n − 1)</strong> → k as n → ∞
+- Throughput = n / ((k + n − 1) tp)</p>
+<p>Example: k = 5, n = 100: pipelined = 104 cycles, non-pipelined = 500 → <strong>S = 500/104 ≈ 4.81</strong>, throughput ≈ 0.96 instr/cycle.</p>
+<h2 id="q75-vector-processing">Q75. Vector processing</h2>
+<ul>
+<li>Vector processor operates on <strong>arrays (vectors) with a single instruction</strong> (e.g., <code>C[i] = A[i] + B[i]</code> for all i).</li>
+<li>Uses deep pipelined functional units and vector registers; one instruction fetch/decode amortised over many elements.</li>
+<li><strong>Advantages:</strong> high throughput for scientific/graphics/ML numeric loops, fewer instructions fetched, no loop overhead or branch hazards, regular memory access (good bandwidth). Examples: Cray, SIMD extensions (AVX).</li>
+</ul>
+<h2 id="q76-uma-vs-numa">Q76. UMA vs NUMA</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>UMA</th>
+<th>NUMA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Uniform Memory Access: all processors reach shared memory through a common interconnect (bus/crossbar)</td>
+<td>Non-Uniform: memory distributed, local to each processor (node)</td>
+</tr>
+<tr>
+<td><strong>Same latency</strong> for all</td>
+<td>Local access fast, remote access slower</td>
+</tr>
+<tr>
+<td>Limited scalability (bus contention)</td>
+<td>Scalable to many processors</td>
+</tr>
+<tr>
+<td>Simpler programming</td>
+<td>Needs data-placement awareness</td>
+</tr>
+<tr>
+<td>Eg: small SMP servers</td>
+<td>Eg: large servers, multi-socket systems</td>
+</tr>
+</tbody>
+</table></div>
+<pre><code>UMA:  P1  P2  P3  P4          NUMA:  [P1|M1]  [P2|M2]  [P3|M3]
+       \   |   |  /                      \       |        /
+      ===== Interconnect =====           ==== Interconnect ====
+             Memory
+</code></pre>
+<h2 id="q77-flynns-classification">Q77. Flynn's classification</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Instruction streams</th>
+<th>Data streams</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SISD</strong></td>
+<td>1</td>
+<td>1</td>
+<td>Conventional uniprocessor</td>
+</tr>
+<tr>
+<td><strong>SIMD</strong></td>
+<td>1</td>
+<td>Many</td>
+<td>Vector/array processors, GPUs</td>
+</tr>
+<tr>
+<td><strong>MISD</strong></td>
+<td>Many</td>
+<td>1</td>
+<td>Rare (fault-tolerant/systolic)</td>
+</tr>
+<tr>
+<td><strong>MIMD</strong></td>
+<td>Many</td>
+<td>Many</td>
+<td>Multiprocessors, multicore, clusters</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<p><em>Tip: for numericals (K-map, Booth, division, IEEE 754, cache, pipeline), practise the method with new numbers; the steps above are what carry marks.</em></p></main><a id="top" href="#t">↑ Top</a></body></html>
